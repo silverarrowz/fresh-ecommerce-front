@@ -12,7 +12,7 @@ const TopBar = () => {
               <FiPhone className="w-4 h-4" />
               <a href="tel:+79843252728">+7 (984) 325-27-28</a>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 cursor-pointer">
               <FiMapPin className="w-4 h-4" />
               <span>Красноярск</span>
             </div>

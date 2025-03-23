@@ -18,7 +18,9 @@ const ProductCard = ({ product }: { product: Product }) => {
 
         <div className="flex justify-between">
           <div>
-            <p className="text-xl font-bold text-cyan-600">{product.price} ₽</p>
+            <p className="text-xl font-bold text-cyan-600">
+              {product.price} руб.
+            </p>
             <h3 className="font-bold text-gray-700">{product.title}</h3>
             <p className="mt-1 text-sm text-gray-500">{product.category}</p>
           </div>

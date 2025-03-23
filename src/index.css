@@ -2,6 +2,11 @@
 
 @layer base {
     body {
-        @apply bg-green-100;
+        @apply bg-gray-50;
+        
     }
+}
+
+@theme {
+    --font-sans: 'Mulish', sans-serif;
 }

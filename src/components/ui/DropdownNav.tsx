@@ -2,6 +2,7 @@ import { Link } from "react-router";
 
 interface DropdownNavProps {
   links: {
+    id: number;
     label: string;
     path: string;
   }[];
@@ -19,6 +20,7 @@ opacity-0 group-hover:opacity-100 ease-out hover:opacity-100 hover:pointer-event
         <nav className="col-span-2 col-start-2 flex flex-col gap-2">
           {links.map((link) => (
             <Link
+              key={link.id}
               to={link.path}
               className="text-gray-700 hover:text-cyan-600 text-2xl"
             >

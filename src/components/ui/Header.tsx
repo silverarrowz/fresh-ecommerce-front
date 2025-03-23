@@ -1,95 +1,145 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { FiSearch, FiHeart, FiShoppingCart, FiMenu, FiX } from "react-icons/fi";
 import TopBar from "./TopBar";
-import DropdownNav from "./DropdownNav";
+import Logo from "./Logo";
+import HeaderNav from "./HeaderNav";
 
 const Header = () => {
   const [showTopBar, setShowTopBar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
   const navLinks = [
     {
-      name: "Весь каталог",
+      id: 0,
+      label: "Весь каталог",
       path: "/products",
 
       links: [
         {
+          id: 0,
           label: "Спортивное питание",
           path: "#",
         },
         {
+          id: 1,
           label: "Витамины и БАДы",
           path: "#",
         },
         {
+          id: 2,
           label: "Подарочные карты",
           path: "#",
         },
         {
+          id: 3,
           label: "Акции",
           path: "#",
         },
       ],
     },
     {
-      name: "Категории",
+      id: 1,
+      label: "Категории",
       path: "/",
 
       links: [
         {
+          id: 0,
           label: "Протеины",
           path: "#",
         },
         {
+          id: 1,
           label: "Протеиновые батончики и печенье",
           path: "#",
         },
         {
+          id: 2,
           label: "Готовые завтраки",
           path: "#",
         },
         {
+          id: 3,
           label: "Изотоники",
           path: "#",
         },
         {
+          id: 4,
           label: "Витамины и БАДы",
           path: "#",
         },
         {
+          id: 5,
           label: "Креатин",
           path: "#",
         },
       ],
     },
     {
-      name: "Бренды",
+      id: 2,
+      label: "Бренды",
       path: "/",
 
       links: [
         {
+          id: 0,
           label: "Fresh",
           path: "#",
         },
         {
+          id: 1,
           label: "Kultlab",
           path: "#",
         },
         {
+          id: 2,
           label: "Chikabar",
           path: "#",
         },
         {
+          id: 3,
           label: "BoomBar",
           path: "#",
         },
       ],
     },
-    { name: "Акции", path: "/" },
-    { name: "Цели", path: "/" },
+    {
+      id: 3,
+      label: "Акции",
+      path: "/",
+    },
+    {
+      id: 4,
+      label: "Цели",
+      path: "/",
+    },
   ];
+
+  useEffect(() => {
+    const handleCloseMenu = (event: MouseEvent) => {
+      if (
+        menuRef.current &&
+        buttonRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleCloseMenu);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleCloseMenu);
+    };
+  }, [isMenuOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -110,7 +160,7 @@ const Header = () => {
   }, [lastScrollY]);
 
   return (
-    <header className="bg-green-100 shadow-sm fixed w-full top-0 z-50">
+    <header className="bg-gray-50 shadow-sm fixed w-full top-0 z-50">
       <div
         className={`transition-all duration-400 ${
           showTopBar ? " max-h-20" : " max-h-0 overflow-hidden"
@@ -119,31 +169,10 @@ const Header = () => {
         <TopBar />
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 bg-green-100">
-          <Link
-            to="/"
-            className="text-2xl font-bold text-cyan-500 flex gap-2 items-center"
-          >
-            <img src="/images/logo.png" alt="logo" className="w-10 h-10" />
-            Fresh
-          </Link>
-
-          <nav className="hidden lg:flex h-full items-center mx-auto">
-            {navLinks.map((link) => (
-              <Link
-                className="group h-full flex items-center"
-                key={link.name}
-                to={link.path}
-              >
-                <h4 className="text-gray-700 hover:text-cyan-500 transition-colors duration-300 text-lg  pr-8 ">
-                  {link.name}
-                </h4>
-                {link.links && <DropdownNav links={link.links} />}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="flex items-center space-x-4">
+        <div className="flex justify-between items-center h-16 bg-gray-50">
+          <Logo />
+          <HeaderNav navLinks={navLinks} />
+          <article className="flex items-center space-x-4">
             <button className="p-2 text-gray-700 cursor-pointer">
               <FiSearch className="w-6 h-6" />
             </button>
@@ -161,29 +190,30 @@ const Header = () => {
             </Link>
 
             <button
-              className="md:hidden p-2 text-gray-700 cursor-pointer"
+              ref={buttonRef}
+              className="lg:hidden p-2 text-gray-700 cursor-pointer"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? (
                 <FiX className="w-7 h-7" />
               ) : (
-                <FiMenu className="w-6 h-6" />
+                <FiMenu className="w-7 h-7" />
               )}
             </button>
-          </div>
+          </article>
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+          <div ref={menuRef} className="lg:hidden">
+            <div className="px-2 py-16 space-y-1">
               {navLinks.map((link) => (
                 <Link
-                  key={link.name}
+                  key={link.id}
                   to={link.path}
-                  className="block px-3 py-2 text-gray-700 hover:text-cyan-600 hover:bg-gray-50 rounded-md"
+                  className="block px-3 py-2 text-2xl text-gray-700 hover:text-cyan-600 hover:bg-gray-50 rounded-md"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {link.name}
+                  {link.label}
                 </Link>
               ))}
             </div>
