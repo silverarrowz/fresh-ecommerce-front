@@ -110,7 +110,7 @@ const Header = () => {
   }, [lastScrollY]);
 
   return (
-    <header className="bg-white shadow-sm fixed w-full top-0 z-50">
+    <header className="bg-green-100 shadow-sm fixed w-full top-0 z-50">
       <div
         className={`transition-all duration-400 ${
           showTopBar ? " max-h-20" : " max-h-0 overflow-hidden"
@@ -119,7 +119,7 @@ const Header = () => {
         <TopBar />
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 bg-white">
+        <div className="flex justify-between items-center h-16 bg-green-100">
           <Link
             to="/"
             className="text-2xl font-bold text-cyan-500 flex gap-2 items-center"
@@ -135,7 +135,7 @@ const Header = () => {
                 key={link.name}
                 to={link.path}
               >
-                <h4 className="text-gray-700 hover:text-cyan-500 transition-colors duration-300 text-lg pr-8 ">
+                <h4 className="text-gray-700 hover:text-cyan-500 transition-colors duration-300 text-lg  pr-8 ">
                   {link.name}
                 </h4>
                 {link.links && <DropdownNav links={link.links} />}

@@ -15,8 +15,8 @@ pointer-events-none group-hover:pointer-events-auto
 opacity-0 group-hover:opacity-100 ease-out hover:opacity-100 hover:pointer-events-auto
       "
     >
-      <div className="max-w-7xl mx-auto py-16 grid grid-cols-4 gap-4">
-        <nav className="col-span-1 flex flex-col gap-2">
+      <div className="max-w-7xl mx-auto py-16 grid grid-cols-6 gap-4">
+        <nav className="col-span-2 col-start-2 flex flex-col gap-2">
           {links.map((link) => (
             <Link
               to={link.path}
