@@ -1,26 +1,25 @@
-import { products } from "@/data/products";
+import { Product } from "@/types";
 import { Link } from "react-router";
 
-const Hero = () => {
-  const heroProduct = products[2];
+const Hero = ({ product }: { product: Product }) => {
   return (
     <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
-      <Link to={`/products/${heroProduct.id}`}>
+      <Link to={`/products/${product.id}`}>
         <div className="relative rounded-2xl overflow-hidden bg-white shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             <div className="relative lg:h-[500px]">
               <div className="absolute inset-0 bg-gradient-to-l from-cyan-100/50 to-transparent lg:hidden" />
               <img
-                src={heroProduct.image}
-                alt={heroProduct.title}
+                src={product.image}
+                alt={product.title}
                 className="w-full h-full object-cover object-center"
               />
             </div>
             <div className="relative z-10 p-8 lg:p-12 flex flex-col justify-center">
               <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                <span className="block">{heroProduct.title}</span>
+                <span className="block">{product.title}</span>
                 <span className="block text-cyan-500 text-2xl sm:text-3xl md:text-4xl mt-4 font-black">
-                  Новый вкус
+                  Новые вкусы сезона
                 </span>
               </h1>
 

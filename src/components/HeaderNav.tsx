@@ -18,16 +18,14 @@ const HeaderNav = ({ navLinks }: HeaderNavProps) => {
   return (
     <nav className="hidden lg:flex h-full items-center mx-auto">
       {navLinks.map((link) => (
-        <Link
-          className="group h-full flex items-center"
-          key={link.id}
-          to={link.path}
-        >
-          <h4 className="text-gray-700 hover:text-cyan-500 transition-colors duration-300 text-lg  pr-8 ">
-            {link.label}
-          </h4>
+        <div key={link.id} className="h-full flex items-center">
+          <Link className="peer" to={link.path}>
+            <h4 className="text-gray-700 hover:text-cyan-500 transition-colors duration-300 text-lg  pr-8 ">
+              {link.label}
+            </h4>
+          </Link>
           {link.links && <DropdownNav links={link.links} />}
-        </Link>
+        </div>
       ))}
     </nav>
   );

@@ -1,12 +1,12 @@
 import { useParams } from "react-router";
-import { products } from "../data/products";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { useState } from "react";
+import { useProduct } from "@/hooks/useProduct";
 
 const Product = () => {
   const { id } = useParams<{ id: string }>();
-  const product = products.find((p) => p.id === id);
+  const { product, isLoading } = useProduct(id!);
   const [quantity, setQuantity] = useState(1);
 
   const breadcrumbItems = [
@@ -15,7 +15,11 @@ const Product = () => {
     { label: product?.title || "", path: `/products/${id}` },
   ];
 
-  if (!product) {
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!product && !isLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-2xl font-bold text-gray-900">Продукт не найден.</h1>
@@ -32,8 +36,8 @@ const Product = () => {
         <div className="flex flex-col">
           <div className="w-full">
             <img
-              src={product.image}
-              alt={product.title}
+              src={product!.image}
+              alt={product!.title}
               className="w-full h-full object-center object-cover rounded-lg"
             />
           </div>
@@ -41,18 +45,18 @@ const Product = () => {
 
         <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
           <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
-            {product.title}
+            {product!.title}
           </h1>
 
           <div className="mt-3">
             <h2 className="sr-only">Информация о товаре</h2>
-            <p className="text-3xl text-gray-900">{product.price} руб.</p>
+            <p className="text-3xl text-gray-900">{product!.price} руб.</p>
           </div>
 
           <div className="mt-6">
             <h3 className="sr-only">Описание</h3>
             <div className="text-base text-gray-700 space-y-6">
-              <p>{product.description}</p>
+              <p>{product!.description}</p>
             </div>
           </div>
 
@@ -89,7 +93,7 @@ const Product = () => {
 
           <div className="mt-8">
             <h3 className="text-sm font-medium text-gray-900">Категория</h3>
-            <p className="mt-2 text-sm text-gray-500">{product.category}</p>
+            <p className="mt-2 text-sm text-gray-500">{product!.category}</p>
           </div>
         </div>
       </div>

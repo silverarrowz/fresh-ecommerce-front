@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { FiMapPin, FiPhone } from "react-icons/fi";
+
 const TopBar = () => {
   return (
     <div

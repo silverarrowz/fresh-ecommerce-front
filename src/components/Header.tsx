@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { FiSearch, FiHeart, FiShoppingCart, FiMenu, FiX } from "react-icons/fi";
 import TopBar from "./TopBar";
 import Logo from "./Logo";
-import HeaderNav from "./HeaderNav";
+import HeaderNav from "@/components/HeaderNav";
+import { getProducts } from "@/services/api";
 
 const Header = () => {
   const [showTopBar, setShowTopBar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const location = useLocation();
 
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -121,6 +124,20 @@ const Header = () => {
   ];
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      const products = await getProducts();
+      console.log(products);
+    };
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setLastScrollY(0);
+    setShowTopBar(true);
+  }, [location]);
+
+  useEffect(() => {
     const handleCloseMenu = (event: MouseEvent) => {
       if (
         menuRef.current &&
@@ -210,7 +227,7 @@ const Header = () => {
                 <Link
                   key={link.id}
                   to={link.path}
-                  className="block px-3 py-2 text-2xl text-gray-700 hover:text-cyan-600 hover:bg-gray-50 rounded-md"
+                  className="block px-3 py-2 text-2xl text-gray-700 hover:text-cyan-500 hover:bg-gray-50 rounded-md"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}

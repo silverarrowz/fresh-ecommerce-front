@@ -1,12 +1,18 @@
-import { products } from "../data/products";
-import ProductCard from "@/components/ui/ProductCard";
+import ProductCard from "@/components/ProductCard";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { useProducts } from "@/hooks/useProducts";
 
 const Products = () => {
   const breadcrumbItems = [
     { label: "Главная", path: "/" },
     { label: "Каталог", path: "/products" },
   ];
+
+  const { products, isLoading } = useProducts();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <main className="max-w-2xl mx-auto py-20 px-4 lg:max-w-7xl lg:px-8">

@@ -12,8 +12,8 @@ const DropdownNav = ({ links }: DropdownNavProps) => {
   return (
     <div
       className="absolute left-0 top-full w-screen bg-white shadow-md
-pointer-events-none group-hover:pointer-events-auto
-opacity-0 group-hover:opacity-100 ease-out hover:opacity-100 hover:pointer-events-auto
+pointer-events-none peer-hover:pointer-events-auto
+opacity-0 peer-hover:opacity-100 ease-out hover:opacity-100 hover:pointer-events-auto
       "
     >
       <div className="max-w-7xl mx-auto py-16 grid grid-cols-6 gap-4">
@@ -22,7 +22,7 @@ opacity-0 group-hover:opacity-100 ease-out hover:opacity-100 hover:pointer-event
             <Link
               key={link.id}
               to={link.path}
-              className="text-gray-700 hover:text-cyan-600 text-2xl"
+              className="text-gray-700 hover:text-cyan-500 text-2xl"
             >
               {link.label}
             </Link>
