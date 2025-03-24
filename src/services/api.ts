@@ -1,3 +1,4 @@
+import { Product } from "@/types";
 import { api } from "./axios"
 
 
@@ -8,5 +9,15 @@ export const getProducts = async () => {
 
 export const getProductById = async (id: string) => {
     const res = await api.get(`/products/${id}`);
+    return res.data;
+}
+
+export const createProduct = async (productData: Partial<Product>) => {
+    const res = await api.post('/products', productData);
+    return res.data;
+}
+
+export const updateProduct = async (id: string, productData: Partial<Product>) => {
+    const res = await api.put(`/products/${id}`, productData);
     return res.data;
 }

@@ -20,6 +20,28 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useProducts } from "@/hooks/useProducts";
 import { Category, Product } from "@/types";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { createProduct, updateProduct } from "@/services/api";
+
+const productFormSchema = z.object({
+  title: z.string().min(1, "Название обязательно"),
+  price: z.number().min(0, "Цена должна быть положительной"),
+  stock: z.number().min(0, "Количество должно быть положительным"),
+  description: z.string().min(1, "Пожалуйста, добавьте описание"),
+  category: z.string().min(1, "Пожалуйста, выберите категорию"),
+});
+
+type ProductFormValues = z.infer<typeof productFormSchema>;
 
 const Admin = () => {
   const { products: fetchedProducts, isLoading } = useProducts();
@@ -30,12 +52,16 @@ const Admin = () => {
   const [products, setProducts] = useState<Product[]>(fetchedProducts);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [formData, setFormData] = useState({
-    title: "",
-    price: 0,
-    stock: 0,
-    description: "",
-    category: "" as Category,
+
+  const form = useForm<ProductFormValues>({
+    resolver: zodResolver(productFormSchema),
+    defaultValues: {
+      title: "",
+      price: 0,
+      stock: 0,
+      description: "",
+      category: "",
+    },
   });
 
   const categories = Array.from(
@@ -43,10 +69,9 @@ const Admin = () => {
   );
 
   const handleOpenDialog = (product?: Product) => {
-    console.log(product);
     if (product) {
       setEditingProduct(product);
-      setFormData({
+      form.reset({
         title: product.title,
         price: product.price,
         stock: product.stock,
@@ -55,12 +80,12 @@ const Admin = () => {
       });
     } else {
       setEditingProduct(null);
-      setFormData({
+      form.reset({
         title: "",
         price: 0,
         stock: 0,
         description: "",
-        category: "" as Category,
+        category: "",
       });
     }
     setOpenDialog(true);
@@ -69,44 +94,43 @@ const Admin = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setEditingProduct(null);
-    setFormData({
-      title: "",
-      price: 0,
-      stock: 0,
-      description: "",
-      category: "" as Category,
-    });
+    form.reset();
   };
 
-  const handleSubmit = () => {
+  const onSubmit = async (data: ProductFormValues) => {
     if (editingProduct) {
       // Редактирование продукта
-      setProducts(
-        products.map((p) =>
-          p.id === editingProduct.id
-            ? {
-                ...p,
-                title: formData.title,
-                price: Number(formData.price),
-                stock: Number(formData.stock),
-                description: formData.description,
-                category: formData.category,
-              }
-            : p
-        )
-      );
+      try {
+        const updatedProduct = await updateProduct(
+          editingProduct.id.toString(),
+          {
+            ...data,
+            category: data.category as Category,
+          } as Partial<Product>
+        );
+        setProducts(
+          products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
+        );
+      } catch (error) {
+        console.error("Ошибка при обновлении продукта:", error);
+      }
     } else {
       // Создание нового продукта
       const newProduct: Product = {
         id: products.length + 1,
-        title: formData.title,
-        price: Number(formData.price),
-        stock: Number(formData.stock),
-        description: formData.description,
-        category: formData.category,
+        title: data.title,
+        price: data.price,
+        stock: data.stock,
+        description: data.description,
+        category: data.category as Category,
         image: "/placeholder.jpg",
       };
-      setProducts([...products, newProduct]);
+      try {
+        await createProduct(newProduct);
+        setProducts([...products, newProduct]);
+      } catch (error) {
+        console.error("Ошибка при создании продукта:", error);
+      }
     }
     handleCloseDialog();
   };
@@ -116,7 +140,7 @@ const Admin = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>Загрузка...</div>;
   }
 
   return (
@@ -177,8 +201,6 @@ const Admin = () => {
           </Table>
         </div>
 
-        {/* Редактор */}
-
         <Dialog open={openDialog} onOpenChange={handleCloseDialog}>
           <DialogContent>
             <DialogHeader>
@@ -186,82 +208,123 @@ const Admin = () => {
                 {editingProduct ? "Редактировать" : "Добавить товар"}
               </DialogTitle>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Input
-                  value={formData.title}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setFormData({ ...formData, title: e.target.value })
-                  }
-                  placeholder="Название"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Input
-                  type="number"
-                  value={formData.price}
-                  min={0}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setFormData({ ...formData, price: Number(e.target.value) })
-                  }
-                  placeholder="Цена"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Input
-                  type="number"
-                  value={formData.stock}
-                  min={0}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setFormData({ ...formData, stock: Number(e.target.value) })
-                  }
-                  placeholder="В наличии"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Textarea
-                  className="max-h-[25rem] min-h-[8rem]"
-                  value={formData.description}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setFormData({ ...formData, description: e.target.value })
-                  }
-                  placeholder="Описание"
-                />
-              </div>
-              <div className="grid gap-2">
-                <select
-                  value={formData.category || ""}
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                    setFormData({
-                      ...formData,
-                      category: e.target.value as Category,
-                    })
-                  }
-                  className="w-full rounded-md border border-input bg-background px-3 py-2"
-                >
-                  <option value="" disabled>
-                    Категория
-                  </option>
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={handleCloseDialog}
-                className="cursor-pointer"
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
               >
-                Отменить
-              </Button>
-              <Button onClick={handleSubmit} className="cursor-pointer">
-                {editingProduct ? "Сохранить" : "Добавить"}
-              </Button>
-            </DialogFooter>
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Название</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Название товара" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Цена</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={0}
+                          placeholder="Цена"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="stock"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>В наличии</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={0}
+                          placeholder="Количество"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Описание</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          className="max-h-[25rem] min-h-[8rem]"
+                          placeholder="Описание товара"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Категория</FormLabel>
+                      <FormControl>
+                        <select
+                          {...field}
+                          className="w-full rounded-md border border-input bg-background px-3 py-2"
+                        >
+                          <option value="" disabled>
+                            Выберите категорию
+                          </option>
+                          {categories.map((category) => (
+                            <option key={category} value={category}>
+                              {category}
+                            </option>
+                          ))}
+                        </select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <DialogFooter>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleCloseDialog}
+                    className="cursor-pointer"
+                  >
+                    Отменить
+                  </Button>
+                  <Button type="submit" className="cursor-pointer">
+                    {editingProduct ? "Сохранить" : "Добавить"}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </Form>
           </DialogContent>
         </Dialog>
       </div>
