@@ -37,14 +37,14 @@ const Admin = () => {
   const handleSubmit = async (data: ProductFormValues) => {
     const formData = new FormData();
     formData.append("title", data.title);
-    formData.append("price", data.price.toString());
-    formData.append("stock", data.stock.toString());
+    formData.append("price", data.price);
+    formData.append("stock", data.stock);
     formData.append("description", data.description);
     formData.append("category", data.category);
 
     if (data.images && Array.isArray(data.images)) {
       data.images.forEach((file) => {
-        formData.append("images", file);
+        formData.append("images[]", file);
       });
     }
 
@@ -52,10 +52,7 @@ const Admin = () => {
       try {
         const updatedProduct = await updateProduct(
           editingProduct.id.toString(),
-          {
-            ...formData,
-            category: formData.get("category") as Category,
-          } as Partial<Product>
+          formData
         );
         setProducts(
           products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
@@ -65,8 +62,8 @@ const Admin = () => {
       }
     } else {
       try {
-        await createProduct(formData as Partial<Product>);
-        // setProducts([...products, newProduct]);
+        const newProduct = await createProduct(formData);
+        setProducts([...products, newProduct]);
       } catch (error) {
         console.error("Ошибка при создании продукта:", error);
       }

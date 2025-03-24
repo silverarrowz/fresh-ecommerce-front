@@ -1,4 +1,3 @@
-import { Product } from "@/types";
 import { api } from "./axios"
 
 
@@ -12,13 +11,22 @@ export const getProductById = async (id: string) => {
     return res.data;
 }
 
-export const createProduct = async (productData: Partial<Product>) => {
-    const res = await api.post('/products', productData);
+export const createProduct = async (productData: FormData) => {
+    const res = await api.post('/products', productData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
     return res.data;
 }
 
-export const updateProduct = async (id: string, productData: Partial<Product>) => {
-    const res = await api.put(`/products/${id}`, productData);
+export const updateProduct = async (id: string, productData: FormData) => {
+    productData.append('_method', 'PUT');
+    const res = await api.post(`/products/${id}`, productData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
     return res.data;
 }
 
