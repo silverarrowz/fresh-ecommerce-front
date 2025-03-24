@@ -8,4 +8,5 @@ export interface Product {
     stock: number;
     image: string;
     category: Category;
+    images?: File[];
   }
