@@ -10,7 +10,9 @@ const Hero = ({ product }: { product: Product }) => {
             <div className="relative lg:h-[500px]">
               <div className="absolute inset-0 bg-gradient-to-l from-cyan-100/50 to-transparent lg:hidden" />
               <img
-                src={product.image}
+                src={`${import.meta.env.VITE_BASE_URL}/storage/${
+                  product.images[0].path
+                }`}
                 alt={product.title}
                 className="w-full h-full object-cover object-center"
               />

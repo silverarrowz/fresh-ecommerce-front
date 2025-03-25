@@ -1,5 +1,5 @@
 import { Product } from "@/types";
-import { getProducts } from "@/services/api";
+import { getProducts } from "@/api/api";
 import { useEffect, useState } from "react";
 
 export function useProducts() {

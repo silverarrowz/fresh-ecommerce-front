@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useProducts } from "@/hooks/useProducts";
 import { Product } from "@/types";
-import { createProduct, deleteProduct, updateProduct } from "@/services/api";
+import { createProduct, deleteProduct, updateProduct } from "@/api/api";
 import {
   ProductEditor,
   ProductFormValues,
@@ -116,7 +116,7 @@ const Admin = () => {
 
   return (
     <>
-      <h1>Панель управления</h1>
+      <h1 className="text-xl mb-8">Панель управления</h1>
       <div>
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-bold">Товары</h2>

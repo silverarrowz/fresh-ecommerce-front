@@ -4,7 +4,7 @@ import { FiSearch, FiHeart, FiShoppingCart, FiMenu, FiX } from "react-icons/fi";
 import TopBar from "./TopBar";
 import Logo from "./Logo";
 import HeaderNav from "@/components/HeaderNav";
-import { getProducts } from "@/services/api";
+import { getProducts } from "@/api/api";
 
 const Header = () => {
   const [showTopBar, setShowTopBar] = useState(true);
@@ -177,7 +177,7 @@ const Header = () => {
   }, [lastScrollY]);
 
   return (
-    <header className="bg-gray-50 shadow-sm fixed w-full top-0 z-50">
+    <header className="bg-green-100 shadow-sm fixed w-full top-0 z-50">
       <div
         className={`transition-all duration-400 ${
           showTopBar ? " max-h-20" : " max-h-0 overflow-hidden"
@@ -186,7 +186,7 @@ const Header = () => {
         <TopBar />
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 bg-gray-50">
+        <div className="flex justify-between items-center h-16 bg-green-100">
           <Logo />
           <HeaderNav navLinks={navLinks} />
           <article className="flex items-center space-x-4">
@@ -227,7 +227,7 @@ const Header = () => {
                 <Link
                   key={link.id}
                   to={link.path}
-                  className="block px-3 py-2 text-2xl text-gray-700 hover:text-cyan-500 hover:bg-gray-50 rounded-md"
+                  className="block px-3 py-2 text-2xl text-gray-700 hover:text-cyan-500 hover:bg-green-200 rounded-md"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getProductById } from '@/services/api';
+import { getProductById } from '@/api/api';
 import { Product } from '@/types';
 
 export function useProduct(id: string) {

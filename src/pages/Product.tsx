@@ -36,7 +36,9 @@ const Product = () => {
         <div className="flex flex-col">
           <div className="w-full">
             <img
-              src={product!.image}
+              src={`${import.meta.env.VITE_BASE_URL}/storage/${
+                product!.images[0].path
+              }`}
               alt={product!.title}
               className="w-full h-full object-center object-cover rounded-lg"
             />

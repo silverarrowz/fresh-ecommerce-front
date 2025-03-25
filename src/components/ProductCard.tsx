@@ -1,4 +1,4 @@
-import { Product } from "@/data/products";
+import { Product } from "@/types";
 import { Link } from "react-router";
 
 const ProductCard = ({ product }: { product: Product }) => {
@@ -7,11 +7,15 @@ const ProductCard = ({ product }: { product: Product }) => {
       <div className="flex flex-col justify-between gap-y-6 h-full">
         <Link to={`/products/${product.id}`} className="flex flex-col gap-y-6">
           <div className="w-full min-h-80 aspect-w-1 aspect-h-1 overflow-hidden lg:h-80 lg:aspect-none">
-            <img
-              src={product.image}
-              alt={product.title}
-              className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-            />
+            {product.images.length > 0 && (
+              <img
+                src={`${import.meta.env.VITE_BASE_URL}/storage/${
+                  product.images[0].path
+                }`}
+                alt={product.title}
+                className="w-full h-full object-center object-cover lg:w-full lg:h-full"
+              />
+            )}
           </div>
 
           <div className="flex justify-between">

@@ -22,31 +22,26 @@ import {
 } from "@/components/ui/form";
 import { useEffect, useState } from "react";
 
-// Валидаци формы
+// Валидация формы
 const productFormSchema = z.object({
   title: z.string().min(1, "Название обязательно"),
   price: z
     .string()
-    .min(0, "Цена обязательна")
+    .nonempty("Укажите цену")
     .refine(
       (val) => !isNaN(Number(val)) && Number(val) >= 0,
       "Цена должна быть положительной"
     ),
   stock: z
     .string()
-    .min(0, "Количество обязательно")
+    .nonempty("Укажите количество")
     .refine(
       (val) => !isNaN(Number(val)) && Number(val) >= 0,
       "Количество должно быть положительным"
     ),
   description: z.string().min(1, "Пожалуйста, добавьте описание"),
   category: z.string().min(1, "Пожалуйста, выберите категорию"),
-  images: z
-    .any()
-    .refine((files) => Array.isArray(files) || files === undefined, {
-      message: "Добавьте хотя бы одно изображение",
-    })
-    .optional(),
+  images: z.any().optional(),
 });
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;
@@ -82,6 +77,7 @@ export const ProductEditor = ({
       stock: "",
       description: "",
       category: "",
+      images: [],
     },
   });
 
@@ -95,6 +91,7 @@ export const ProductEditor = ({
         stock: editingProduct.stock.toString(),
         description: editingProduct.description,
         category: editingProduct.category,
+        images: [],
       });
     } else {
       setOriginalProduct(null);
@@ -104,6 +101,7 @@ export const ProductEditor = ({
         stock: "",
         description: "",
         category: "",
+        images: [],
       });
     }
   }, [editingProduct, form]);
@@ -125,6 +123,14 @@ export const ProductEditor = ({
     );
   };
 
+  // Проверяем, есть ли хотя бы одно изображение (существующее или новое)
+  const hasAtLeastOneImage = () => {
+    const existingImages = getDisplayImages();
+    const newImages = form.watch("images") || [];
+    console.log(existingImages, newImages);
+    return existingImages.length > 0 || newImages.length > 0;
+  };
+
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="md:max-w-3xl">
@@ -138,6 +144,13 @@ export const ProductEditor = ({
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit((data) => {
+                  if (!hasAtLeastOneImage()) {
+                    form.setError("images", {
+                      type: "manual",
+                      message: "Добавьте хотя бы одно изображение",
+                    });
+                    return;
+                  }
                   onSubmit({ ...data, imagesToDelete });
                 })}
                 className="space-y-4"
@@ -285,7 +298,7 @@ export const ProductEditor = ({
             {getDisplayImages().map((image) => (
               <div key={image.id} className="relative">
                 <img
-                  src={`http://127.0.0.1:8000/storage/${image.path}`}
+                  src={`${import.meta.env.VITE_BASE_URL}/storage/${image.path}`}
                   alt="Preview"
                   className="w-24 h-24 object-cover rounded-md mr-2 mt-2"
                 />
