@@ -20,8 +20,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
+// Валидаци формы
 const productFormSchema = z.object({
   title: z.string().min(1, "Название обязательно"),
   price: z
@@ -53,9 +54,12 @@ export type ProductFormValues = z.infer<typeof productFormSchema>;
 interface ProductEditorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: ProductFormValues) => Promise<void>;
+  onSubmit: (
+    data: ProductFormValues & { imagesToDelete?: number[] }
+  ) => Promise<void>;
   editingProduct?: Product | null;
   categories: Category[];
+  onProductUpdate?: (product: Product) => void;
 }
 
 export const ProductEditor = ({
@@ -64,7 +68,12 @@ export const ProductEditor = ({
   onSubmit,
   editingProduct,
   categories,
+  onProductUpdate,
 }: ProductEditorProps) => {
+  const [imagesToDelete, setImagesToDelete] = useState<number[]>([]);
+  const [originalProduct, setOriginalProduct] = useState<Product | null>(null);
+
+  // Инициалиируем форму с React Hook Form
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
     defaultValues: {
@@ -76,8 +85,10 @@ export const ProductEditor = ({
     },
   });
 
+  // Сохраняем изначальное состояние продукта
   useEffect(() => {
     if (editingProduct) {
+      setOriginalProduct(editingProduct);
       form.reset({
         title: editingProduct.title,
         price: editingProduct.price.toString(),
@@ -86,6 +97,7 @@ export const ProductEditor = ({
         category: editingProduct.category,
       });
     } else {
+      setOriginalProduct(null);
       form.reset({
         title: "",
         price: "",
@@ -99,159 +111,224 @@ export const ProductEditor = ({
   const handleClose = () => {
     onOpenChange(false);
     form.reset();
+    setImagesToDelete([]);
+    // Возвращаем продукт в изначальное состояние, если форма закрыта без сохранения
+    if (originalProduct) {
+      onProductUpdate?.(originalProduct);
+    }
+  };
+
+  const getDisplayImages = () => {
+    if (!originalProduct?.images) return [];
+    return originalProduct.images.filter(
+      (image) => !imagesToDelete.includes(image.id)
+    );
   };
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent>
+      <DialogContent className="md:max-w-3xl">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="mb-4">
             {editingProduct ? "Редактировать" : "Добавить товар"}
           </DialogTitle>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Название</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Название товара" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Цена</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      min={0}
-                      placeholder="Цена"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="stock"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>В наличии</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      min={0}
-                      placeholder="Количество"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Описание</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="max-h-[25rem] min-h-[8rem]"
-                      placeholder="Описание товара"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Категория</FormLabel>
-                  <FormControl>
-                    <select
-                      {...field}
-                      className="w-full rounded-md border border-input bg-background px-3 py-2"
-                    >
-                      <option value="" disabled>
-                        Выберите категорию
-                      </option>
-                      {categories.map((category) => (
-                        <option key={category} value={category}>
-                          {category}
-                        </option>
-                      ))}
-                    </select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="images"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Изображения</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      onChange={(e) => {
-                        const files = e.target.files
-                          ? Array.from(e.target.files)
-                          : [];
-                        field.onChange(files);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <div className="flex gap-4">
+          <div>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit((data) => {
+                  onSubmit({ ...data, imagesToDelete });
+                })}
+                className="space-y-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Название</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Название товара" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Цена</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={0}
+                          placeholder="Цена"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="stock"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>В наличии</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={0}
+                          placeholder="Количество"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Описание</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          className="max-h-[25rem] min-h-[8rem]"
+                          placeholder="Описание товара"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Категория</FormLabel>
+                      <FormControl>
+                        <select
+                          {...field}
+                          className="w-full rounded-md border border-input bg-background px-3 py-2"
+                        >
+                          <option value="" disabled>
+                            Выберите категорию
+                          </option>
+                          {categories.map((category) => (
+                            <option key={category} value={category}>
+                              {category}
+                            </option>
+                          ))}
+                        </select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {/* Загрузка изображений */}
+                <FormField
+                  control={form.control}
+                  name="images"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Изображения</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          multiple
+                          accept="image/*"
+                          onChange={(e) => {
+                            const newFiles = e.target.files
+                              ? Array.from(e.target.files)
+                              : [];
+                            const currentFiles = field.value || [];
+                            field.onChange([...currentFiles, ...newFiles]);
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <DialogFooter>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleClose}
+                    className="cursor-pointer"
+                  >
+                    Отменить
+                  </Button>
+                  <Button type="submit" className="cursor-pointer">
+                    {editingProduct ? "Сохранить" : "Добавить"}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </Form>
+          </div>
+          {/* Превью изображений */}
+          <div className="flex-11/12 lg:flex-2/5 flex flex-wrap items-start h-fit">
+            {/* Изображения из базы данных */}
+            {getDisplayImages().map((image) => (
+              <div key={image.id} className="relative">
+                <img
+                  src={`http://127.0.0.1:8000/storage/${image.path}`}
+                  alt="Preview"
+                  className="w-24 h-24 object-cover rounded-md mr-2 mt-2"
+                />
+                {/* Помечаем изображение для удаления */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImagesToDelete((prev) => [...prev, image.id]);
+                  }}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+            {/* Новые изображения */}
             {Array.isArray(form.watch("images")) &&
               form.watch("images").length > 0 &&
-              form
-                .watch("images")
-                .map((file: File, index: number) => (
+              form.watch("images").map((file: File, index: number) => (
+                <div key={index} className="relative">
                   <img
-                    key={index}
                     src={URL.createObjectURL(file)}
                     alt={`Preview ${index + 1}`}
-                    className="w-20 h-20 object-cover rounded-md mr-2 mt-2"
+                    className="w-24 h-24 object-cover rounded-md mr-2 mt-2"
                   />
-                ))}
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleClose}
-                className="cursor-pointer"
-              >
-                Отменить
-              </Button>
-              <Button type="submit" className="cursor-pointer">
-                {editingProduct ? "Сохранить" : "Добавить"}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // Удаляем загруженное изображение
+                      const currentFiles = form.getValues("images") || [];
+                      form.setValue(
+                        "images",
+                        currentFiles.filter((_: File, i: number) => i !== index)
+                      );
+                    }}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

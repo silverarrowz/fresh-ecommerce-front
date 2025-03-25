@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useProducts } from "@/hooks/useProducts";
-import { Category, Product } from "@/types";
+import { Product } from "@/types";
 import { createProduct, deleteProduct, updateProduct } from "@/services/api";
 import {
   ProductEditor,
@@ -12,13 +12,16 @@ import ProductsTable from "@/components/admin/ProductsTable";
 
 const Admin = () => {
   const { products: fetchedProducts, isLoading } = useProducts();
-  useEffect(() => {
-    setProducts(fetchedProducts);
-  }, [fetchedProducts]);
-
-  const [products, setProducts] = useState<Product[]>(fetchedProducts);
+  const [products, setProducts] = useState<Product[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+
+  useEffect(() => {
+    if (fetchedProducts) {
+      setProducts(fetchedProducts);
+      console.log(fetchedProducts);
+    }
+  }, [fetchedProducts]);
 
   const categories = Array.from(
     new Set(products.map((product) => product.category))
@@ -34,7 +37,11 @@ const Admin = () => {
     setEditingProduct(null);
   };
 
-  const handleSubmit = async (data: ProductFormValues) => {
+  // Отправляем данные на сервер для создания или обновления продукта
+
+  const handleSubmit = async (
+    data: ProductFormValues & { imagesToDelete?: number[] }
+  ) => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("price", data.price);
@@ -48,36 +55,59 @@ const Admin = () => {
       });
     }
 
-    if (editingProduct) {
-      try {
-        const updatedProduct = await updateProduct(
+    if (data.imagesToDelete && Array.isArray(data.imagesToDelete)) {
+      formData.append("imagesToDelete", JSON.stringify(data.imagesToDelete));
+    }
+
+    // Обновляем продукт
+
+    try {
+      if (editingProduct) {
+        const response = await updateProduct(
           editingProduct.id.toString(),
           formData
         );
-        setProducts(
-          products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-        );
-      } catch (error) {
-        console.error("Ошибка при обновлении продукта:", error);
+
+        // Обновляем данные о продукте в списке
+        const updatedProduct = response["0"];
+        setProducts((prevProducts) => {
+          const newProducts = prevProducts.map((p) =>
+            p.id === updatedProduct.id ? updatedProduct : p
+          );
+
+          return newProducts;
+        });
+
+        setEditingProduct(updatedProduct);
+      } else {
+        // Создаем новый продукт
+
+        const response = await createProduct(formData);
+        const newProduct = response["0"];
+        console.log(response);
+
+        // Добавляем новый продукт в список продуктов
+        setProducts((prevProducts) => {
+          const newProducts = [...prevProducts, newProduct];
+          return newProducts;
+        });
       }
-    } else {
-      try {
-        const newProduct = await createProduct(formData);
-        setProducts([...products, newProduct]);
-      } catch (error) {
-        console.error("Ошибка при создании продукта:", error);
-      }
+      handleCloseDialog();
+    } catch (error) {
+      console.error(
+        `Ошибка при ${editingProduct ? "обновлении" : "создании"} продукта:`,
+        error
+      );
     }
-    handleCloseDialog();
   };
 
   const handleDelete = async (id: number) => {
     try {
       await deleteProduct(id.toString());
+      setProducts((prevProducts) => prevProducts.filter((p) => p.id !== id));
     } catch (error) {
       console.error("Ошибка при удалении продукта:", error);
     }
-    setProducts(products.filter((p) => p.id !== id));
   };
 
   if (isLoading) {
@@ -112,6 +142,14 @@ const Admin = () => {
           onSubmit={handleSubmit}
           editingProduct={editingProduct}
           categories={categories}
+          onProductUpdate={(updatedProduct) => {
+            setProducts((prevProducts) =>
+              prevProducts.map((p) =>
+                p.id === updatedProduct.id ? updatedProduct : p
+              )
+            );
+            setEditingProduct(updatedProduct);
+          }}
         />
       </div>
     </>
