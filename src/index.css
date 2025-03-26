@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap");
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -5,12 +8,17 @@
 
 @layer base {
   body {
-    @apply bg-green-200;
+    @apply bg-gray-200;
   }
 }
 
 @theme {
-  --font-sans: "Mulish", sans-serif;
+  --font-montserrat: "Montserrat", sans-serif;
+  --font-playfair: "Playfair Display", serif;
+
+  --breakpoint-smm: 720px;
+  --breakpoint-mlg: 810px;
+  
 }
 
 :root {
@@ -125,6 +133,10 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-green-200 text-foreground;
+    @apply bg-gray-200 text-foreground font-montserrat;
+  }
+
+  button {
+    @apply cursor-pointer;
   }
 }

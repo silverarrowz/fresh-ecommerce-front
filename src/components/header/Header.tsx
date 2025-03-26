@@ -2,14 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { FiSearch, FiHeart, FiShoppingCart, FiMenu, FiX } from "react-icons/fi";
 import TopBar from "./TopBar";
-import Logo from "./Logo";
-import HeaderNav from "@/components/HeaderNav";
-import { getProducts } from "@/api/api";
+import Logo from "@/components/Logo";
+import HeaderNav from "./HeaderNav";
+import CartSheet from "@/components/CartSheet";
 
 const Header = () => {
   const [showTopBar, setShowTopBar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const location = useLocation();
 
@@ -124,14 +125,6 @@ const Header = () => {
   ];
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const products = await getProducts();
-      console.log(products);
-    };
-    fetchProducts();
-  }, []);
-
-  useEffect(() => {
     window.scrollTo(0, 0);
     setLastScrollY(0);
     setShowTopBar(true);
@@ -177,7 +170,7 @@ const Header = () => {
   }, [lastScrollY]);
 
   return (
-    <header className="bg-green-100 shadow-sm fixed w-full top-0 z-50">
+    <header className="bg-gray-100 shadow-sm fixed w-full top-0 z-150">
       <div
         className={`transition-all duration-400 ${
           showTopBar ? " max-h-20" : " max-h-0 overflow-hidden"
@@ -185,8 +178,8 @@ const Header = () => {
       >
         <TopBar />
       </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 bg-green-100">
+      <div className="max-w-7xl mx-auto px-4 ">
+        <div className="flex justify-between items-center h-16 bg-gray-100">
           <Logo />
           <HeaderNav navLinks={navLinks} />
           <article className="flex items-center space-x-4">
@@ -199,12 +192,15 @@ const Header = () => {
                 0
               </span>
             </Link>
-            <Link to="#" className="p-2 text-gray-700 relative">
+            <button
+              className="p-2 text-gray-700 relative cursor-pointer"
+              onClick={() => setIsCartOpen(true)}
+            >
               <FiShoppingCart className="w-6 h-6" />
               <span className="absolute right-0 -bottom-[1px] z-10 h-[15px] min-w-[15px] px-[3px] text-white text-[9px] leading-[15px] text-center bg-[#ce181f] rounded-[8px]">
                 0
               </span>
-            </Link>
+            </button>
 
             <button
               ref={buttonRef}
@@ -221,7 +217,7 @@ const Header = () => {
         </div>
 
         {isMenuOpen && (
-          <div ref={menuRef} className="lg:hidden">
+          <div ref={menuRef} className="h-screen lg:hidden">
             <div className="px-2 py-16 space-y-1">
               {navLinks.map((link) => (
                 <Link
@@ -237,6 +233,8 @@ const Header = () => {
           </div>
         )}
       </div>
+
+      <CartSheet open={isCartOpen} onOpenChange={setIsCartOpen} />
     </header>
   );
 };

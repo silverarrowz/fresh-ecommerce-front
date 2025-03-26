@@ -8,7 +8,7 @@ const Logo = ({ dark }: { dark?: boolean }) => {
         dark ? "text-white" : "text-cyan-500"
       }`}
     >
-      <img src="/images/logo.png" alt="logo" className="w-10 h-10 font-serif" />
+      <img src="/images/logo.png" alt="logo" className="w-10 h-10 " />
       Fresh
     </Link>
   );

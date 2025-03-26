@@ -12,9 +12,15 @@ export interface Product {
     id: number;
     title: string;
     price: number;
+    price_old?: number;
     description: string;
     stock: number;
     image: string;
     category: Category;
     images: ProductImage[];
+}
+
+export interface CartItem {
+    product_id: number;
+    quantity: number;
 }

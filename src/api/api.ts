@@ -33,3 +33,25 @@ export const deleteProduct = async (id: string) => {
     const res = await api.delete(`/products/${id}`);
     return res.data
 }
+
+
+// Корзина
+
+export const getCart = async () => {
+    
+}
+
+export const addProductToCart = async (productId: number, quantity: number) => {
+    try {
+        const res = await api.post(`/cart`, {
+            product_id: productId,
+            quantity: quantity,
+        });
+        console.log('Cart updated:', res.data);
+        return res.data;
+    } catch (error) {
+
+        console.error('Error adding item to cart:', error instanceof Error ? error.message : 'Unknown error');
+        return null;
+    }
+}

@@ -32,6 +32,13 @@ const productFormSchema = z.object({
       (val) => !isNaN(Number(val)) && Number(val) >= 0,
       "Цена должна быть положительной"
     ),
+  price_old: z
+    .string()
+    .optional()
+    .refine(
+      (val) => !isNaN(Number(val)) && Number(val) >= 0,
+      "Цена должна быть положительной"
+    ),
   stock: z
     .string()
     .nonempty("Укажите количество")
@@ -74,6 +81,7 @@ export const ProductEditor = ({
     defaultValues: {
       title: "",
       price: "",
+      price_old: "",
       stock: "",
       description: "",
       category: "",
@@ -88,6 +96,7 @@ export const ProductEditor = ({
       form.reset({
         title: editingProduct.title,
         price: editingProduct.price.toString(),
+        price_old: editingProduct.price_old?.toString() || "",
         stock: editingProduct.stock.toString(),
         description: editingProduct.description,
         category: editingProduct.category,
@@ -98,6 +107,7 @@ export const ProductEditor = ({
       form.reset({
         title: "",
         price: "",
+        price_old: "",
         stock: "",
         description: "",
         category: "",
@@ -153,7 +163,7 @@ export const ProductEditor = ({
                   }
                   onSubmit({ ...data, imagesToDelete });
                 })}
-                className="space-y-4"
+                className="space-y-4 max-h-[36rem] overflow-y-scroll"
               >
                 <FormField
                   control={form.control}
@@ -180,6 +190,24 @@ export const ProductEditor = ({
                           type="number"
                           min={0}
                           placeholder="Цена"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="price_old"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Цена без скидки</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={0}
+                          placeholder="Цена без скидки"
                           {...field}
                         />
                       </FormControl>
