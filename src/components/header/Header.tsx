@@ -5,6 +5,8 @@ import TopBar from "./TopBar";
 import Logo from "@/components/Logo";
 import HeaderNav from "./HeaderNav";
 import CartSheet from "@/components/CartSheet";
+import useCartStore from "@/store/cartStore";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Header = () => {
   const [showTopBar, setShowTopBar] = useState(true);
@@ -13,6 +15,8 @@ const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const location = useLocation();
+  const { user } = useAuth();
+  const { cartItems, fetchCart } = useCartStore();
 
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -124,6 +128,16 @@ const Header = () => {
     },
   ];
 
+  let cartItemsCount = 0;
+
+  if (cartItems && cartItems.length > 0) {
+    cartItemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  }
+
+  useEffect(() => {
+    fetchCart(user);
+  }, [user, fetchCart]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     setLastScrollY(0);
@@ -198,7 +212,7 @@ const Header = () => {
             >
               <FiShoppingCart className="w-6 h-6" />
               <span className="absolute right-0 -bottom-[1px] z-10 h-[15px] min-w-[15px] px-[3px] text-white text-[9px] leading-[15px] text-center bg-[#ce181f] rounded-[8px]">
-                0
+                {cartItemsCount}
               </span>
             </button>
 

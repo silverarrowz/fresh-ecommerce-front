@@ -6,12 +6,14 @@ import {
   ReactNode,
 } from "react";
 import { User } from "@/api/auth";
-import { getUser } from "@/api/auth";
+import { getUser, logout as logoutApi } from "@/api/auth";
+import { useNavigate } from "react-router";
 
 interface AuthContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   isLoading: boolean;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,6 +21,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    try {
+      await logoutApi();
+      setUser(null);
+      localStorage.removeItem("token");
+      navigate(window.location.pathname, { replace: true });
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -39,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, isLoading }}>
+    <AuthContext.Provider value={{ user, setUser, isLoading, logout }}>
       {children}
     </AuthContext.Provider>
   );

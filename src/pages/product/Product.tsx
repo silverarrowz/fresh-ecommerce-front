@@ -1,14 +1,15 @@
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { FiMinus, FiPlus, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useState } from "react";
 import { useProduct } from "@/hooks/useProduct";
 import { useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
-import { Star, Truck, Heart } from "lucide-react";
+import { Star, Truck, Heart, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { addProductToCart } from "@/api/api";
+import useCartStore from "@/store/cartStore";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Product = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +17,9 @@ const Product = () => {
   const { products } = useProducts();
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const { addToCart } = useCartStore();
+  const { user } = useAuth();
 
   const handlePreviousImage = () => {
     setSelectedImageIndex((prev) =>
@@ -30,13 +34,9 @@ const Product = () => {
   };
 
   const handleAddToCart = async () => {
-    const updatedCart = await addProductToCart(product!.id, quantity);
-
-    if (updatedCart) {
-      console.log("Product added to cart:", updatedCart);
-    } else {
-      console.error("Failed to add product to cart");
-    }
+    console.log(product);
+    await addToCart(product!, quantity, user);
+    setQuantity(1);
   };
 
   const relatedProducts = products?.filter((p) => p.id !== Number(id)) || [];
@@ -67,8 +67,15 @@ const Product = () => {
 
   if (!product && !isLoading) {
     return (
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 pt-20 pb-12">
         <h1 className="text-2xl font-bold text-gray-900">Продукт не найден.</h1>
+        <Link
+          to="/products"
+          className="text-cyan-600 hover:text-cyan-500 transition-colors duration-300 mt-6 flex items-center gap-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Вернуться в каталог
+        </Link>
       </div>
     );
   }
@@ -191,7 +198,7 @@ const Product = () => {
               <button
                 className="h-full px-4 border border-r-0 rounded-md hover:bg-muted/50 transition-colors cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
                 onClick={() => setQuantity(quantity - 1)}
-                disabled={quantity === 1}
+                disabled={quantity <= 1}
               >
                 <FiMinus className="h-4 w-4" />
               </button>

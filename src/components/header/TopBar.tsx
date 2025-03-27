@@ -3,7 +3,7 @@ import { FiMapPin, FiPhone } from "react-icons/fi";
 import { useAuth } from "@/contexts/AuthContext";
 
 const TopBar = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   return (
     <div
       className={`bg-gray-900 text-white transition-transform duration-300 relative z-85`}
@@ -30,7 +30,10 @@ const TopBar = () => {
                 >
                   Мой аккаунт
                 </Link>
-                <button className="cursor-pointer text-gray-300 hover:text-cyan-400 transition-colors ">
+                <button
+                  className="cursor-pointer text-gray-300 hover:text-cyan-400 transition-colors "
+                  onClick={logout}
+                >
                   Выйти
                 </button>
               </div>

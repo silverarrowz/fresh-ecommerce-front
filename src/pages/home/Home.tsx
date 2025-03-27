@@ -2,7 +2,7 @@ import ProductCard from "@/components/ProductCard";
 import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import Hero from "@/pages/home/components/Hero";
 import { useProducts } from "@/hooks/useProducts";
-import OutroSection from "./home/components/OutroSection";
+import OutroSection from "./components/OutroSection";
 
 const Home = () => {
   const { products, isLoading } = useProducts();
