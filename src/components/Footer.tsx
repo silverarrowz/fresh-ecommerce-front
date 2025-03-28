@@ -80,7 +80,7 @@ const Footer = () => {
               <div className="flex">
                 <Input
                   type="email"
-                  placeholder="Your email"
+                  placeholder="Ваш E-mail"
                   className="rounded-r-none bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-primary"
                 />
                 <Button

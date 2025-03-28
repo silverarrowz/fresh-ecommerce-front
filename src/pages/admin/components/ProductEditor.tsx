@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Category, Product } from "@/types";
+import { Product } from "@/types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -60,7 +60,7 @@ interface ProductEditorProps {
     data: ProductFormValues & { imagesToDelete?: number[] }
   ) => Promise<void>;
   editingProduct?: Product | null;
-  categories: Category[];
+  categories: string[];
   onProductUpdate?: (product: Product) => void;
 }
 

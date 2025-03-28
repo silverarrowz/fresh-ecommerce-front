@@ -5,11 +5,11 @@ import { useState } from "react";
 import { useProduct } from "@/hooks/useProduct";
 import { useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
-import { Star, Truck, Heart, ArrowLeft } from "lucide-react";
+import { Star, Truck, Heart, ArrowLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import useCartStore from "@/store/cartStore";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 const Product = () => {
   const { id } = useParams<{ id: string }>();
@@ -20,6 +20,7 @@ const Product = () => {
 
   const { addToCart } = useCartStore();
   const { user } = useAuth();
+  const [isAdded, setIsAdded] = useState(false);
 
   const handlePreviousImage = () => {
     setSelectedImageIndex((prev) =>
@@ -34,9 +35,13 @@ const Product = () => {
   };
 
   const handleAddToCart = async () => {
-    console.log(product);
     await addToCart(product!, quantity, user);
     setQuantity(1);
+    setIsAdded(true);
+
+    setTimeout(() => {
+      setIsAdded(false);
+    }, 1000);
   };
 
   const relatedProducts = products?.filter((p) => p.id !== Number(id)) || [];
@@ -220,17 +225,14 @@ const Product = () => {
             </div>
 
             <div className="flex-1 flex gap-3">
-              <Button
-                className="flex-1 h-12 bg-cyan-500 hover:bg-cyan-400 hover:shadow-[0_0_28px_rgba(0,211,243,0.63)] transition-all duration-300 cursor-pointer"
+              <button
+                className="flex-1 h-12 p-0 text-white rounded-md bg-cyan-500 hover:bg-cyan-400 hover:shadow-[0_0_28px_rgba(0,211,243,0.63)] transition-all duration-300 cursor-pointer flex items-center justify-center disabled:pointer-events-none disabled:opacity-50"
                 onClick={handleAddToCart}
+                disabled={quantity < 1}
               >
-                В корзину
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-12 w-12 cursor-pointer"
-              >
+                {isAdded ? <Check className="h-7 w-7" /> : "В корзину"}
+              </button>
+              <Button variant="outline" className="h-12 w-12 cursor-pointer">
                 <Heart className="h-5 w-5" />
               </Button>
             </div>

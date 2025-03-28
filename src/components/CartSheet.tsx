@@ -6,12 +6,14 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Plus, Minus, X, ShoppingBag } from "lucide-react";
-import { useEffect } from "react";
-import { useAuth } from "@/contexts/AuthContext";
+import { Plus, Minus, X, ShoppingBag, Loader2 } from "lucide-react";
+
+import { useAuth } from "@/context/AuthContext";
 import useCartStore from "@/store/cartStore";
 import { CartItem, LocalCartItem } from "@/types";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { createOrder } from "@/api/api";
+import { useState } from "react";
 
 const CartSheet = ({
   open,
@@ -21,23 +23,12 @@ const CartSheet = ({
   onOpenChange: (open: boolean) => void;
 }) => {
   const { user } = useAuth();
-  const {
-    fetchCart,
-    cartItems,
-    addOne,
-    removeOne,
-    removeFromCart,
-    getTotalPrice,
-  } = useCartStore();
+  const { cartItems, addOne, removeOne, removeFromCart, getTotalPrice } =
+    useCartStore();
+  const navigate = useNavigate();
 
-  // Ensure items is always an array
   const items = Array.isArray(cartItems) ? cartItems : [];
-
-  useEffect(() => {
-    if (open) {
-      fetchCart(user);
-    }
-  }, [user, open, fetchCart]);
+  const [isLoading, setIsLoading] = useState(false);
 
   let total = 0;
   if (items.length > 0) {
@@ -45,7 +36,6 @@ const CartSheet = ({
   }
   const deliveryCost = 0;
 
-  // Helper function to get item display data
   const getItemDisplayData = (item: CartItem | LocalCartItem) => {
     if ("product" in item) {
       return {
@@ -61,6 +51,26 @@ const CartSheet = ({
     };
   };
 
+  const getOrderItem = (item: CartItem | LocalCartItem) => {
+    return {
+      product_id: item.product_id,
+      quantity: item.quantity,
+    };
+  };
+
+  const handleCheckout = async () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    if (items.length === 0) {
+      return;
+    }
+    const orderItems = items.map(getOrderItem);
+    setIsLoading(true);
+    await createOrder(orderItems);
+  };
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange} aria-labelledby="cart-sheet">
       <SheetContent
@@ -69,7 +79,14 @@ const CartSheet = ({
       >
         <SheetHeader className="border-b pb-4">
           <SheetTitle className="text-xl font-medium text-center">
-            Корзина
+            <Link
+              to="/cart"
+              onClick={() => onOpenChange(false)}
+              className="inline-block relative hover:text-cyan-500 transition-colors duration-300"
+            >
+              Корзина
+              <span className="absolute bottom-0 left-0 w-full h-1 bg-cyan-500/10 rounded-full" />
+            </Link>
           </SheetTitle>
         </SheetHeader>
 
@@ -169,8 +186,12 @@ const CartSheet = ({
                 <span>Итого:</span>
                 <span>{total} ₽</span>
               </div>
-              <Button className="w-full" size="lg">
-                Оформить заказ
+              <Button onClick={handleCheckout} className="w-full" size="lg">
+                {isLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  "Оформить заказ"
+                )}
               </Button>
             </div>
           </>

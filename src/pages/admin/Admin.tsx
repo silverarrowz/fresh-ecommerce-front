@@ -6,8 +6,9 @@ import { Product } from "@/types";
 import { createProduct, deleteProduct, updateProduct } from "@/api/api";
 import { ProductEditor, ProductFormValues } from "./components/ProductEditor";
 import ProductsTable from "./components/ProductsTable";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
 
 const Admin = () => {
   const { products: fetchedProducts, isLoading } = useProducts();
@@ -16,12 +17,22 @@ const Admin = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [activeTab, setActiveTab] = useState("products");
 
+  const { isAdmin, user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user || !isAdmin(user)) {
+      navigate("/");
+    }
+  }, [isAdmin, user, navigate]);
+
   useEffect(() => {
     if (fetchedProducts) {
       setProducts(fetchedProducts);
     }
   }, [fetchedProducts]);
 
+  // TODO: сделать категории таблицей в БД
   const categories = Array.from(
     new Set(products.map((product) => product.category))
   );

@@ -42,8 +42,8 @@ export default function OutroSection() {
                 </ButtonLink>
               </div>
             </div>
-            <div className="relative h-[600px]">
-              <div className="absolute -top-8 -right-8 w-[110%] h-[110%]">
+            <div className="relative h-[600px] -ml-12 md:ml-0">
+              <div className="absolute  -top-8 -right-8 w-[110%] h-[110%]">
                 <div className="relative h-full w-full">
                   <div className="absolute inset-0 bg-gradient-to-l from-green-600/50 to-transparent md:rounded-2xl" />
                   <img

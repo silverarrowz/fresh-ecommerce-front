@@ -113,15 +113,15 @@ export function Banner() {
 
       <Button
         onClick={() => scrollToIndex(currentIndex - 1)}
-        className="pointer-events-auto rounded-full w-32 h-32 p-0 bg-transparent shadow-none hover:bg-transparent absolute left-0 top-1/2 -translate-y-1/2 z-100 cursor-pointer"
+        className="pointer-events-auto rounded-full w-24 h-24 sm:w-32 sm:h-32 p-0 bg-transparent shadow-none hover:bg-transparent absolute -left-6 sm:left-0 top-1/2 -translate-y-1/2 z-100 cursor-pointer"
       >
-        <ChevronLeft className="size-18" strokeWidth={0.5} />
+        <ChevronLeft className="size-14 sm:size-18" strokeWidth={0.5} />
       </Button>
       <Button
         onClick={() => scrollToIndex(currentIndex + 1)}
-        className="pointer-events-auto rounded-full w-32 h-32 p-0 bg-transparent shadow-none hover:bg-transparent absolute right-0 top-1/2 -translate-y-1/2 z-100 cursor-pointer"
+        className="pointer-events-auto rounded-full w-24 h-24 sm:w-32 sm:h-32 p-0 bg-transparent shadow-none hover:bg-transparent absolute -right-6 sm:right-0 top-1/2 -translate-y-1/2 z-100 cursor-pointer"
       >
-        <ChevronRight className="size-18" strokeWidth={0.5} />
+        <ChevronRight className="size-14 sm:size-18" strokeWidth={0.5} />
       </Button>
     </div>
   );

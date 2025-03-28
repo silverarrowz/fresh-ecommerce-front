@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
-import { FiSearch, FiHeart, FiShoppingCart, FiMenu, FiX } from "react-icons/fi";
+import { FiHeart, FiShoppingCart, FiMenu, FiX } from "react-icons/fi";
+import { IoSearchOutline } from "react-icons/io5";
 import TopBar from "./TopBar";
 import Logo from "@/components/Logo";
 import HeaderNav from "./HeaderNav";
 import CartSheet from "@/components/CartSheet";
 import useCartStore from "@/store/cartStore";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 const Header = () => {
   const [showTopBar, setShowTopBar] = useState(true);
@@ -136,7 +137,7 @@ const Header = () => {
 
   useEffect(() => {
     fetchCart(user);
-  }, [user, fetchCart]);
+  }, [user]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -196,12 +197,12 @@ const Header = () => {
         <div className="flex justify-between items-center h-16 bg-gray-100">
           <Logo />
           <HeaderNav navLinks={navLinks} />
-          <article className="flex items-center space-x-4">
+          <article className="flex items-center space-x-1 sm:space-x-4">
             <button className="p-2 text-gray-700 cursor-pointer">
-              <FiSearch className="w-6 h-6" />
+              <IoSearchOutline className="w-6 h-6 sm:w-6 sm:h-6" />
             </button>
             <Link to="#" className="p-2 text-gray-700 relative">
-              <FiHeart className="w-6 h-6" />
+              <FiHeart className="w-5 h-5 sm:w-6 sm:h-6" />
               <span className="absolute right-0 -bottom-[1px] z-10 h-[15px] min-w-[15px] px-[3px] text-white text-[9px] leading-[15px] text-center bg-[#ce181f] rounded-[8px]">
                 0
               </span>
@@ -210,7 +211,7 @@ const Header = () => {
               className="p-2 text-gray-700 relative cursor-pointer"
               onClick={() => setIsCartOpen(true)}
             >
-              <FiShoppingCart className="w-6 h-6" />
+              <FiShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
               <span className="absolute right-0 -bottom-[1px] z-10 h-[15px] min-w-[15px] px-[3px] text-white text-[9px] leading-[15px] text-center bg-[#ce181f] rounded-[8px]">
                 {cartItemsCount}
               </span>
@@ -222,9 +223,9 @@ const Header = () => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? (
-                <FiX className="w-7 h-7" />
+                <FiX className="w-6 h-6 sm:w-7 sm:h-7" />
               ) : (
-                <FiMenu className="w-7 h-7" />
+                <FiMenu className="w-6 h-6 sm:w-7 sm:h-7" />
               )}
             </button>
           </article>

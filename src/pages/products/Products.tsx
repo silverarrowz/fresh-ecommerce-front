@@ -58,7 +58,7 @@ const Products = () => {
         initial="hidden"
         animate="show"
         exit={{ opacity: 0 }}
-        className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
+        className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8 w-fit text-center"
       >
         {isLoading
           ? Array.from({ length: 8 }).map((_, index) => (
@@ -75,18 +75,18 @@ const Products = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-12 flex flex-col items-center gap-4"
+          className="mt-12 flex flex-col items-center  gap-4"
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center ">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="h-10 w-10 rounded-full  disabled:opacity-50 disabled:pointer-events-none"
+              className="rounded-full  disabled:opacity-50 disabled:pointer-events-none mr-2"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center justify-center gap-1">
               {[...Array(totalPages)].map((_, i) => (
                 <button
                   key={i + 1}
@@ -105,13 +105,13 @@ const Products = () => {
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="h-10 w-10 rounded-full  disabled:opacity-50 disabled:pointer-events-none"
+              className=" rounded-full  disabled:opacity-50 disabled:pointer-events-none ml-2"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
           </div>
 
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 ">
             Страница {page} из {totalPages}
           </p>
         </motion.div>

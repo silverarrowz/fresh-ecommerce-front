@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { FiMapPin, FiPhone } from "react-icons/fi";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 const TopBar = () => {
   const { user, logout } = useAuth();
@@ -11,11 +11,11 @@ const TopBar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-8 text-sm">
           <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 text-xs sm:text-sm">
               <FiPhone className="w-4 h-4" />
               <a href="tel:+79843252728">+7 (984) 325-27-28</a>
             </div>
-            <div className="flex items-center space-x-2 cursor-pointer">
+            <div className="hidden sm:flex items-center space-x-2 cursor-pointer">
               <FiMapPin className="w-4 h-4" />
               <span>Красноярск</span>
             </div>
@@ -25,7 +25,7 @@ const TopBar = () => {
             {user ? (
               <div className="flex gap-4">
                 <Link
-                  to="/auth"
+                  to="/account"
                   className=" hover:text-cyan-400 transition-colors "
                 >
                   Мой аккаунт

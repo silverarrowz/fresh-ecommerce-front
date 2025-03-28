@@ -16,10 +16,9 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { login, register } from "@/api/auth";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { AxiosError } from "axios";
 
-// Validation schemas
 const loginSchema = z.object({
   email: z.string().email("Неверный адрес электронной почты"),
   password: z.string().min(6, "Пароль должен быть не менее 6 символов"),

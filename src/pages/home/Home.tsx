@@ -12,7 +12,12 @@ const Home = () => {
       <Hero />
 
       <section className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8">Хит продаж</h2>
+        <h2 className="text-2xl font-bold mb-8">
+          <span className="inline-block relative">
+            Хит продаж
+            <span className="absolute bottom-0 left-0 w-full h-1 bg-cyan-500/10 rounded-full" />
+          </span>
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {isLoading
             ? Array.from({ length: 8 }).map((_, index) => (
@@ -25,8 +30,11 @@ const Home = () => {
       </section>
 
       <section className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8">
-          Успей купить по акции
+        <h2 className="text-2xl font-bold mb-8">
+          <span className="inline-block relative">
+            Успей купить по акции
+            <span className="absolute bottom-0 left-0 w-full h-1 bg-cyan-500/10 rounded-full" />
+          </span>
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {isLoading

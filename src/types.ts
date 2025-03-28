@@ -51,4 +51,23 @@ interface ProductImage {
     price: string;
     title: string;
     image: string;
-  } 
+  }
+
+export interface Order {
+  id: number;
+  user_id: number;
+  total: number;
+  status: 'pending' | 'paid' | 'cancelled';
+  created_at: string;
+  updated_at: string;
+  items: OrderItem[];
+}
+
+export interface OrderItem {
+  product_id: number;
+  quantity: number;
+  price?: string;
+  title?: string;
+  image?: string;
+} 
+

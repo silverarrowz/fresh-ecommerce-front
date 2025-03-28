@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Logo from "@/components/Logo";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home } from "lucide-react";
 
 const NotFound = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -101,7 +103,7 @@ const NotFound = () => {
           transition={{ delay: 0.9, duration: 0.4 }}
           className="flex flex-col sm:flex-row gap-4"
         >
-          <Link to="/" onClick={() => window.history.back()}>
+          <Link to="/" onClick={() => navigate(-1)}>
             <Button
               variant="outline"
               className="bg-transparent text-white border-white hover:bg-white/10 hover:text-white"

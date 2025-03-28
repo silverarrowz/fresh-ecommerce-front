@@ -8,7 +8,9 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthPage from "./pages/auth/AuthPage";
 import NotFound from "./pages/NotFound";
-
+import Account from "./pages/account/Account";
+import Cart from "./pages/cart/Cart";
+import SuccessPage from "./pages/success/SuccessPage";
 function App() {
   return (
     <Routes>
@@ -17,6 +19,11 @@ function App() {
         <Route path="products" element={<Products />} />
         <Route path="products/:id" element={<Product />} />
         <Route path="*" element={<NotFound />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="account" element={<Account />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="success" element={<SuccessPage />} />
+        </Route>
       </Route>
 
       <Route element={<ProtectedRoute />}>

@@ -1,14 +1,15 @@
+import { OrderItem } from "@/types";
 import { api } from "./axios"
 
 // Товары
 
 export const getProducts = async () => {
-    const res = await api.get('/products/all');
+    const res = await api.get('/products');
     return res.data;
 }
 
 export const getProductsWithPagination = async (page: number = 1, perPage: number = 8) => {
-    const res = await api.get('/products', {
+    const res = await api.get('/products/paginated', {
         params: {
             page,
             per_page: perPage,
@@ -19,6 +20,15 @@ export const getProductsWithPagination = async (page: number = 1, perPage: numbe
 
 export const getProductById = async (id: string) => {
     const res = await api.get(`/products/${id}`);
+    return res.data;
+}
+
+export const getProductByTag = async (tag: string) => {
+    const res = await api.get(`/products/tags`, {
+        params: {
+            tag,
+        }
+    })
     return res.data;
 }
 
@@ -92,6 +102,52 @@ export const removeFromCart = async (productId: number) => {
         return res.data;
     } catch (error) {
         console.error('Error removing item from cart:', error instanceof Error ? error.message : 'Unknown error');
+        throw error;
+    }
+}
+
+
+// Заказы
+
+export const createOrder = async (orderItems: OrderItem[]) => {
+    try {
+        const token = localStorage.getItem("token");
+        const res = await api.post(
+            '/checkout',
+          {
+            items: orderItems,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const { url } = res.data;
+        if (url) {
+          window.location.href = url;
+        }
+      } catch (error) {
+        console.error("Checkout failed:", error);
+      }
+}
+
+export const fetchUserOrders = async () => {
+    try {
+        const res = await api.get('/orders');
+        return res.data;
+    } catch (error) {
+        console.error('Error fetching user orders:', error instanceof Error ? error.message : 'Unknown error');
+        throw error;
+    }
+}
+
+export const getOrderBySessionId = async (sessionId: string) => {
+    try {
+        const res = await api.get(`/orders/by-session/${sessionId}`);
+        return res.data;
+    } catch (error) {
+        console.error('Error fetching order by session ID:', error instanceof Error ? error.message : 'Unknown error');
         throw error;
     }
 }
