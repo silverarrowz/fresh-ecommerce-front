@@ -4,6 +4,7 @@ import Hero from "@/pages/home/components/Hero";
 import OutroSection from "./components/OutroSection";
 import { ArrowRight, Check } from "lucide-react";
 import { useLatestProducts } from "@/hooks/useProducts";
+import { Link } from "react-router";
 
 const Home = () => {
   const { data: products, isLoading, error } = useLatestProducts();
@@ -101,10 +102,13 @@ const Home = () => {
           </div>
 
           <div className="mt-16 w-full flex items-center gap-4">
-            <button className="px-6 py-3 rounded-full bg-green-500 hover:bg-green-400 hover:shadow-[0_0_18px_rgba(34,197,94,0.8)] transition-all duration-300 text-white font-medium flex items-center gap-2">
+            <Link
+              to="/products"
+              className="px-6 py-3 rounded-full bg-green-500 hover:bg-green-400 hover:shadow-[0_0_18px_rgba(34,197,94,0.8)] transition-all duration-300 text-white font-medium flex items-center gap-2"
+            >
               Смотреть каталог
               <ArrowRight className="h-4 w-4" />
-            </button>
+            </Link>
           </div>
         </div>
       </section>

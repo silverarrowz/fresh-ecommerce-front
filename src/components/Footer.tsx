@@ -1,5 +1,4 @@
 import { Link } from "react-router";
-import { FiMail, FiSend } from "react-icons/fi";
 import Logo from "./Logo";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
