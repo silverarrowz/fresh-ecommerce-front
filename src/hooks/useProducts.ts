@@ -1,17 +1,25 @@
+import { getAllProducts, getLatestProducts, getProductById } from "@/api/api";
+import { useQuery } from "@tanstack/react-query";
 import { Product } from "@/types";
-import { getProducts } from "@/api/api";
-import { useEffect, useState } from "react";
 
 export function useProducts() {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    return useQuery<Product[], Error>({
+        queryKey: ['products'],
+        queryFn: getAllProducts
+    })
+}
 
-    useEffect(() => {
-        getProducts()
-        .then(setProducts)
-        .catch(console.error)
-        .finally(() => setIsLoading(false))
-    }, [])
+export function useLatestProducts() {
+    return useQuery<Product[], Error>({
+        queryKey: ['latestProducts'],
+        queryFn: getLatestProducts
+    })
+}
 
-    return { products, isLoading }
+export function useProduct(id: string) {
+    return useQuery<Product, Error>({
+        queryKey: ['product', id],
+        queryFn: () => getProductById(id),
+        enabled: !!id
+    })
 }

@@ -1,14 +1,23 @@
-import { OrderItem } from "@/types";
+import { CartItem, Order, OrderItem, Product } from "@/types";
 import { api } from "./axios"
 
 // Товары
 
-export const getProducts = async () => {
+export const getAllProducts = async (): Promise<Product[]> => {
     const res = await api.get('/products');
     return res.data;
 }
 
-export const getProductsWithPagination = async (page: number = 1, perPage: number = 8) => {
+export const getLatestProducts = async (): Promise<Product[]> => {
+    const res = await api.get('/products/latest');
+    return res.data;
+}
+
+export const getProductsWithPagination = async (page: number = 1, perPage: number = 8): Promise<{
+        data: Product[],
+        last_page: number,
+        current_page: number,
+}> => {
     const res = await api.get('/products/paginated', {
         params: {
             page,
@@ -18,12 +27,12 @@ export const getProductsWithPagination = async (page: number = 1, perPage: numbe
     return res.data;
 }
 
-export const getProductById = async (id: string) => {
+export const getProductById = async (id: string): Promise<Product> => {
     const res = await api.get(`/products/${id}`);
     return res.data;
 }
 
-export const getProductByTag = async (tag: string) => {
+export const getProductsByTag = async (tag: string): Promise<Product[]> => {
     const res = await api.get(`/products/tags`, {
         params: {
             tag,
@@ -32,7 +41,10 @@ export const getProductByTag = async (tag: string) => {
     return res.data;
 }
 
-export const createProduct = async (productData: FormData) => {
+export const createProduct = async (productData: FormData): Promise<{
+    "0": Product;
+    message: string;
+}> => {
     const res = await api.post('/products', productData, {
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -41,7 +53,10 @@ export const createProduct = async (productData: FormData) => {
     return res.data;
 }
 
-export const updateProduct = async (id: string, productData: FormData) => {
+export const updateProduct = async (id: string, productData: FormData): Promise<{
+    "0": Product;
+    message: string;
+}> => {
     productData.append('_method', 'PUT');
     const res = await api.post(`/products/${id}`, productData, {
         headers: {
@@ -51,7 +66,7 @@ export const updateProduct = async (id: string, productData: FormData) => {
     return res.data;
 }
 
-export const deleteProduct = async (id: string) => {
+export const deleteProduct = async (id: string): Promise<void> => {
     const res = await api.delete(`/products/${id}`);
     return res.data
 }
@@ -59,7 +74,7 @@ export const deleteProduct = async (id: string) => {
 
 // Корзина
 
-export const getCart = async () => {
+export const getCart = async (): Promise<CartItem[]> => {
     try {
         const res = await api.get('/cart');
         return res.data;
@@ -69,7 +84,7 @@ export const getCart = async () => {
     }
 }
 
-export const addProductToCart = async (productId: number, quantity: number) => {
+export const addProductToCart = async (productId: number, quantity: number): Promise<CartItem[]> => {
     try {
         const res = await api.post(`/cart`, {
             product_id: productId,
@@ -84,7 +99,7 @@ export const addProductToCart = async (productId: number, quantity: number) => {
     }
 }
 
-export const updateCartItem = async (productId: number, quantity: number) => {
+export const updateCartItem = async (productId: number, quantity: number): Promise<CartItem[]> => {
     try {
         const res = await api.put(`/cart/${productId}`, {
             quantity: quantity,
@@ -96,7 +111,7 @@ export const updateCartItem = async (productId: number, quantity: number) => {
     }
 }
 
-export const removeFromCart = async (productId: number) => {
+export const removeFromCart = async (productId: number): Promise<CartItem[]> => {
     try {
         const res = await api.delete(`/cart/${productId}`);
         return res.data;
@@ -132,7 +147,9 @@ export const createOrder = async (orderItems: OrderItem[]) => {
       }
 }
 
-export const fetchUserOrders = async () => {
+export const fetchUserOrders = async (): Promise<{
+    orders: Order[],
+}> => {
     try {
         const res = await api.get('/orders');
         return res.data;

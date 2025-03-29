@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 
 const Admin = () => {
-  const { products: fetchedProducts, isLoading } = useProducts();
+  const { data: fetchedProducts, isLoading } = useProducts();
   const [products, setProducts] = useState<Product[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -84,7 +84,7 @@ const Admin = () => {
       } else {
         const response = await createProduct(formData);
         const newProduct = response["0"];
-        setProducts((prevProducts) => [...prevProducts, newProduct]);
+        setProducts((prevProducts) => [newProduct, ...prevProducts]);
       }
       handleCloseDialog();
     } catch (error) {
@@ -93,6 +93,14 @@ const Admin = () => {
         error
       );
     }
+    formData.delete("imagesToDelete");
+    formData.delete("images");
+    formData.delete("title");
+    formData.delete("price");
+    formData.delete("price_old");
+    formData.delete("stock");
+    formData.delete("description");
+    formData.delete("category");
   };
 
   const handleDelete = async (id: number) => {

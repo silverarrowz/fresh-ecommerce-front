@@ -2,19 +2,19 @@ import { Link, useParams } from "react-router";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { FiMinus, FiPlus, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useState } from "react";
-import { useProduct } from "@/hooks/useProduct";
-import { useProducts } from "@/hooks/useProducts";
+
 import ProductCard from "@/components/ProductCard";
 import { Star, Truck, Heart, ArrowLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import useCartStore from "@/store/cartStore";
 import { useAuth } from "@/context/AuthContext";
+import { useProduct, useProducts } from "@/hooks/useProducts";
 
 const Product = () => {
   const { id } = useParams<{ id: string }>();
-  const { product, isLoading } = useProduct(id!);
-  const { products } = useProducts();
+  const { data: product, isLoading } = useProduct(id!);
+  const { data: products } = useProducts();
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 

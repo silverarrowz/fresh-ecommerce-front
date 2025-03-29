@@ -162,6 +162,7 @@ export const ProductEditor = ({
                     return;
                   }
                   onSubmit({ ...data, imagesToDelete });
+                  form.reset();
                 })}
                 className="space-y-4 max-h-[36rem] overflow-y-scroll"
               >
