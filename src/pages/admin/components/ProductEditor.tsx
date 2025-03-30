@@ -150,7 +150,7 @@ export const ProductEditor = ({
           </DialogTitle>
         </DialogHeader>
         <div className="flex gap-4">
-          <div>
+          <div className="w-1/2">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit((data) => {
@@ -322,46 +322,23 @@ export const ProductEditor = ({
             </Form>
           </div>
           {/* Превью изображений */}
-          <div className="flex-11/12 lg:flex-2/5 flex flex-wrap items-start h-fit">
-            {/* Изображения из базы данных */}
-            {getDisplayImages().map((image) => (
-              <div key={image.id} className="relative">
-                <img
-                  src={`${import.meta.env.VITE_BASE_URL}/storage/${image.path}`}
-                  alt="Preview"
-                  className="w-24 h-24 object-cover rounded-md mr-2 mt-2"
-                />
-                {/* Помечаем изображение для удаления */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setImagesToDelete((prev) => [...prev, image.id]);
-                  }}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-            {/* Новые изображения */}
-            {Array.isArray(form.watch("images")) &&
-              form.watch("images").length > 0 &&
-              form.watch("images").map((file: File, index: number) => (
-                <div key={index} className="relative">
+          <div className="w-1/2">
+            <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50/50 rounded-lg">
+              {/* Изображения из базы данных */}
+              {getDisplayImages().map((image) => (
+                <div key={image.id} className="relative aspect-square">
                   <img
-                    src={URL.createObjectURL(file)}
-                    alt={`Preview ${index + 1}`}
-                    className="w-24 h-24 object-cover rounded-md mr-2 mt-2"
+                    src={`${import.meta.env.VITE_BASE_URL}/storage/${
+                      image.path
+                    }`}
+                    alt="Preview"
+                    className="w-full h-full object-cover rounded-md"
                   />
+                  {/* Помечаем изображение для удаления */}
                   <button
                     type="button"
                     onClick={() => {
-                      // Удаляем загруженное изображение
-                      const currentFiles = form.getValues("images") || [];
-                      form.setValue(
-                        "images",
-                        currentFiles.filter((_: File, i: number) => i !== index)
-                      );
+                      setImagesToDelete((prev) => [...prev, image.id]);
                     }}
                     className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
                   >
@@ -369,6 +346,35 @@ export const ProductEditor = ({
                   </button>
                 </div>
               ))}
+              {/* Новые изображения */}
+              {Array.isArray(form.watch("images")) &&
+                form.watch("images").length > 0 &&
+                form.watch("images").map((file: File, index: number) => (
+                  <div key={index} className="relative aspect-square">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={`Preview ${index + 1}`}
+                      className="w-full h-full object-cover rounded-md"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        // Удаляем загруженное изображение
+                        const currentFiles = form.getValues("images") || [];
+                        form.setValue(
+                          "images",
+                          currentFiles.filter(
+                            (_: File, i: number) => i !== index
+                          )
+                        );
+                      }}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
       </DialogContent>
