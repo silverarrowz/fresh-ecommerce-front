@@ -122,13 +122,13 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
+      <header className="bg-white ">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-8">
               <Link
                 to="/"
-                className="flex items-center space-x-2 text-gray-900 hover:text-cyan-600 transition-colors"
+                className="flex items-center space-x-2 text-gray-900 hover:text-cyan-500 transition-colors"
               >
                 <Home className="h-5 w-5" />
                 <span className="font-semibold">На главную</span>

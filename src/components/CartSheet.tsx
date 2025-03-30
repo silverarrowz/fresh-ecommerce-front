@@ -74,15 +74,15 @@ const CartSheet = ({
   return (
     <Sheet open={open} onOpenChange={onOpenChange} aria-labelledby="cart-sheet">
       <SheetContent
-        className="w-full sm:max-w-lg z-250 flex flex-col"
+        className="w-full sm:max-w-lg z-250 flex flex-col border-none"
         aria-describedby="cart-sheet-description"
       >
-        <SheetHeader className="border-b pb-4">
+        <SheetHeader className="pb-4">
           <SheetTitle className="text-xl font-medium text-center">
             <Link
               to="/cart"
               onClick={() => onOpenChange(false)}
-              className="inline-block relative hover:text-cyan-500 transition-colors duration-300"
+              className="inline-block relative hover:text-cyan-500 transition-colors duration-300 mt-4"
             >
               Корзина
               <span className="absolute bottom-0 left-0 w-full h-1 bg-cyan-500/10 rounded-full" />
@@ -149,26 +149,22 @@ const CartSheet = ({
                           {displayData.price} ₽
                         </p>
                         <div className="flex items-center gap-2 mt-3">
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            className="h-8 w-8 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
+                          <button
+                            className="h-8 w-8  border-none shadow-none transition-all duration-300 flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
                             disabled={item.quantity === 1}
                             onClick={() => removeOne(item.product_id, user)}
                           >
                             <Minus className="h-4 w-4" />
-                          </Button>
+                          </button>
                           <span className="w-8 text-center font-medium">
                             {item.quantity}
                           </span>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            className="h-8 w-8 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
+                          <button
+                            className="h-8 w-8  border-none shadow-none transition-all duration-300 flex items-center justify-center"
                             onClick={() => addOne(item.product_id, user)}
                           >
                             <Plus className="h-4 w-4" />
-                          </Button>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -177,7 +173,7 @@ const CartSheet = ({
               </div>
             </ScrollArea>
 
-            <div className="border-t pt-6 pb-6 px-4 space-y-4">
+            <div className="pt-6 pb-6 px-4 space-y-4">
               <div className="flex justify-between items-center text-sm">
                 <span className="text-muted-foreground">Доставка:</span>
                 <span>{deliveryCost} ₽</span>

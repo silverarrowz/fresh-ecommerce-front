@@ -24,6 +24,14 @@ const TopBar = () => {
           <div className="flex items-center space-x-4 z-90 relative">
             {user ? (
               <div className="flex gap-4">
+                {user.role === "admin" && (
+                  <Link
+                    to="/admin"
+                    className=" hover:text-cyan-400 transition-colors "
+                  >
+                    Админ-панель
+                  </Link>
+                )}
                 <Link
                   to="/account"
                   className=" hover:text-cyan-400 transition-colors "

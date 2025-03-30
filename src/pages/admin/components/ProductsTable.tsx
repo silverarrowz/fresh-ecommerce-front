@@ -23,7 +23,7 @@ const ProductsTable = ({
 }: ProductsTableProps) => {
   return (
     <Table>
-      <TableHeader>
+      <TableHeader className="border-0">
         <TableRow>
           <TableHead className="text-center">ID</TableHead>
           <TableHead>Название</TableHead>
@@ -35,7 +35,7 @@ const ProductsTable = ({
       </TableHeader>
       <TableBody>
         {products.map((product) => (
-          <TableRow key={product.id}>
+          <TableRow key={product.id} className="border-0">
             <TableCell className="text-center">{product.id}</TableCell>
             <TableCell>{product.title}</TableCell>
             <TableCell>{product.category}</TableCell>

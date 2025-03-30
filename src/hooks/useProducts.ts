@@ -1,5 +1,5 @@
 import { getAllProducts, getLatestProducts, getProductById } from "@/api/api";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Product } from "@/types";
 
 export function useProducts() {
@@ -22,4 +22,17 @@ export function useProduct(id: string) {
         queryFn: () => getProductById(id),
         enabled: !!id
     })
+}
+
+export function usePrefetchFeaturedProduct() {
+    const queryClient = useQueryClient();
+    
+    return () => {
+        queryClient.prefetchQuery({
+            queryKey: ['product', '4'],
+            queryFn: () => getProductById('4'),
+            staleTime: 1000 * 60 * 5, 
+            gcTime: 1000 * 60 * 30,
+        });
+    };
 }

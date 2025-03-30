@@ -63,7 +63,7 @@ const Account = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
-      className="min-h-screen bg-gradient-to-b from-gray-50 to-white"
+      className="min-h-screen bg-white"
     >
       <div className="container mx-auto px-4 sm:px-6 pb-20 pt-12 max-w-7xl">
         <div className="grid gap-8 lg:gap-12   lg:grid-cols-[350px_1fr]">
@@ -98,7 +98,8 @@ const Account = () => {
                   <Input
                     value={user?.email}
                     readOnly
-                    className="bg-gray-50/50 border-gray-200 focus:ring-cyan-500/20 transition-all duration-200"
+                    className="bg-gray-50/50 border-gray-200 
+        focus-visible:ring-0  focus:ring-cyan-500/20 transition-all duration-200"
                   />
                 </div>
                 <div className="space-y-2">
@@ -108,7 +109,7 @@ const Account = () => {
                   <Input
                     value={user?.name}
                     readOnly
-                    className="bg-gray-50/50 border-gray-200 focus:ring-cyan-500/20 transition-all duration-200"
+                    className="bg-gray-50/50 border-gray-200 focus-visible:ring-0 focus:ring-cyan-500/20 transition-all duration-200"
                   />
                 </div>
               </CardContent>

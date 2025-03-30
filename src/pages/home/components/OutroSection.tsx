@@ -9,9 +9,9 @@ export default function OutroSection() {
         <div className="absolute inset-0 bg-[url('/images/pattern.png')] opacity-10" />
 
         <div className="container relative px-4 mx-auto pt-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div className="space-y-6">
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium">
+              <div className="inline-flex items-center px-4 py-2  bg-white/10 backdrop-blur-sm text-white text-sm font-medium">
                 Создаем будущее спорта
               </div>
               <h3 className="text-4xl md:text-5xl font-bold text-white">

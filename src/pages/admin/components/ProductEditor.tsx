@@ -164,7 +164,7 @@ export const ProductEditor = ({
                   onSubmit({ ...data, imagesToDelete });
                   form.reset();
                 })}
-                className="space-y-4 max-h-[36rem] overflow-y-scroll"
+                className="space-y-4 max-h-[36rem] overflow-y-scroll p-2"
               >
                 <FormField
                   control={form.control}
@@ -173,7 +173,11 @@ export const ProductEditor = ({
                     <FormItem>
                       <FormLabel>Название</FormLabel>
                       <FormControl>
-                        <Input placeholder="Название товара" {...field} />
+                        <Input
+                          placeholder="Название товара"
+                          className="border-0 border-b border-gray-200 focus-visible:border-2 focus-visible:border-cyan-500 focus-visible:ring-0 transition-colors duration-200"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -191,6 +195,7 @@ export const ProductEditor = ({
                           type="number"
                           min={0}
                           placeholder="Цена"
+                          className="border-0 border-b border-gray-200 focus-visible:border-2 focus-visible:border-cyan-500 focus-visible:ring-0 transition-colors duration-200"
                           {...field}
                         />
                       </FormControl>
@@ -209,6 +214,7 @@ export const ProductEditor = ({
                           type="number"
                           min={0}
                           placeholder="Цена без скидки"
+                          className="border-0 border-b border-gray-200 focus-visible:border-2 focus-visible:border-cyan-500 focus-visible:ring-0 transition-colors duration-200"
                           {...field}
                         />
                       </FormControl>
@@ -228,6 +234,7 @@ export const ProductEditor = ({
                           type="number"
                           min={0}
                           placeholder="Количество"
+                          className="border-0 border-b border-gray-200 focus-visible:border-2 focus-visible:border-cyan-500 focus-visible:ring-0 transition-colors duration-200"
                           {...field}
                         />
                       </FormControl>
@@ -244,7 +251,7 @@ export const ProductEditor = ({
                       <FormLabel>Описание</FormLabel>
                       <FormControl>
                         <Textarea
-                          className="max-h-[25rem] min-h-[8rem]"
+                          className="max-h-[25rem] min-h-[8rem] border-0 border-b border-gray-200 focus-visible:border-2 focus-visible:border-cyan-500 focus-visible:ring-0 transition-colors duration-200"
                           placeholder="Описание товара"
                           {...field}
                         />
@@ -263,7 +270,7 @@ export const ProductEditor = ({
                       <FormControl>
                         <select
                           {...field}
-                          className="w-full rounded-md border border-input bg-background px-3 py-2"
+                          className="w-full rounded-md border-0 border-b border-gray-200 focus-visible:outline-none focus-visible:border-2 focus-visible:border-cyan-500 focus-visible:ring-0 transition-colors duration-200 bg-transparent px-3 py-2 cursor-pointer"
                         >
                           <option value="" disabled>
                             Выберите категорию

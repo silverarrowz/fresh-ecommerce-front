@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
-import { FiHeart, FiShoppingCart, FiMenu, FiX } from "react-icons/fi";
-import { IoSearchOutline } from "react-icons/io5";
+import { FiHeart, FiShoppingCart, FiMenu, FiX, FiSearch } from "react-icons/fi";
 import TopBar from "./TopBar";
 import Logo from "@/components/Logo";
 import HeaderNav from "./HeaderNav";
 import CartSheet from "@/components/CartSheet";
 import useCartStore from "@/store/cartStore";
 import { useAuth } from "@/context/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Header = () => {
   const [showTopBar, setShowTopBar] = useState(true);
@@ -27,7 +27,6 @@ const Header = () => {
       id: 0,
       label: "Весь каталог",
       path: "/products",
-
       links: [
         {
           id: 0,
@@ -55,7 +54,6 @@ const Header = () => {
       id: 1,
       label: "Категории",
       path: "/",
-
       links: [
         {
           id: 0,
@@ -93,7 +91,6 @@ const Header = () => {
       id: 2,
       label: "Бренды",
       path: "/",
-
       links: [
         {
           id: 0,
@@ -137,7 +134,7 @@ const Header = () => {
 
   useEffect(() => {
     fetchCart(user);
-  }, [user]);
+  }, [user, fetchCart]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -185,68 +182,87 @@ const Header = () => {
   }, [lastScrollY]);
 
   return (
-    <header className="bg-gray-100 shadow-sm fixed w-full top-0 z-150">
-      <div
-        className={`transition-all duration-400 ${
-          showTopBar ? " max-h-20" : " max-h-0 overflow-hidden"
-        }`}
-      >
-        <TopBar />
-      </div>
-      <div className="max-w-7xl mx-auto px-4 ">
-        <div className="flex justify-between items-center h-16 bg-gray-100">
+    <header className="bg-white fixed w-full top-0 z-150">
+      <AnimatePresence>
+        {showTopBar && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <TopBar />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center h-20 bg-white ">
           <Logo />
           <HeaderNav navLinks={navLinks} />
-          <article className="flex items-center space-x-1 sm:space-x-4">
-            <button className="p-2 text-gray-700 cursor-pointer">
-              <IoSearchOutline className="w-6 h-6 sm:w-6 sm:h-6" />
+          <article className="flex items-center space-x-6">
+            <button className="p-2 text-black/60 hover:text-black transition-colors">
+              <FiSearch className="w-5 h-5" />
             </button>
-            <Link to="#" className="p-2 text-gray-700 relative">
-              <FiHeart className="w-5 h-5 sm:w-6 sm:h-6" />
-              <span className="absolute right-0 -bottom-[1px] z-10 h-[15px] min-w-[15px] px-[3px] text-white text-[9px] leading-[15px] text-center bg-[#ce181f] rounded-[8px]">
+            <Link
+              to="#"
+              className="p-2 text-black/60 hover:text-black transition-colors relative"
+            >
+              <FiHeart className="w-5 h-5" />
+              <span className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] leading-4 text-white text-center bg-black rounded-sm">
                 0
               </span>
             </Link>
             <button
-              className="p-2 text-gray-700 relative cursor-pointer"
+              className="p-2 text-black/60 hover:text-black transition-colors relative"
               onClick={() => setIsCartOpen(true)}
             >
-              <FiShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
-              <span className="absolute right-0 -bottom-[1px] z-10 h-[15px] min-w-[15px] px-[3px] text-white text-[9px] leading-[15px] text-center bg-[#ce181f] rounded-[8px]">
+              <FiShoppingCart className="w-5 h-5" />
+              <span className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] leading-4 text-white text-center bg-black rounded-sm">
                 {cartItemsCount}
               </span>
             </button>
 
             <button
               ref={buttonRef}
-              className="lg:hidden p-2 text-gray-700 cursor-pointer"
+              className="lg:hidden p-2 text-black/60 hover:text-black transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? (
-                <FiX className="w-6 h-6 sm:w-7 sm:h-7" />
+                <FiX className="w-6 h-6" />
               ) : (
-                <FiMenu className="w-6 h-6 sm:w-7 sm:h-7" />
+                <FiMenu className="w-6 h-6" />
               )}
             </button>
           </article>
         </div>
 
-        {isMenuOpen && (
-          <div ref={menuRef} className="h-screen lg:hidden">
-            <div className="px-2 py-16 space-y-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.id}
-                  to={link.path}
-                  className="block px-3 py-2 text-2xl text-gray-700 hover:text-cyan-500 hover:bg-green-200 rounded-md"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              ref={menuRef}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+              className="lg:hidden bg-white border-b border-black/5"
+            >
+              <div className="px-4 py-8 space-y-2">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.id}
+                    to={link.path}
+                    className="block px-4 py-3 text-lg text-black/60 hover:text-black hover:bg-cyan-400/20 transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <CartSheet open={isCartOpen} onOpenChange={setIsCartOpen} />

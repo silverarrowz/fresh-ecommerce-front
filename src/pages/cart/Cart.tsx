@@ -192,7 +192,7 @@ const Cart = () => {
                                   <h3 className="font-medium text-lg text-gray-900 group-hover:text-cyan-500 transition-colors">
                                     {displayData.title}
                                   </h3>
-                                  <p className="text-gray-500 mt-1">
+                                  <p className="text-gray-500 mt-1 font-light">
                                     {displayData.price} ₽
                                   </p>
                                   <div
@@ -200,9 +200,9 @@ const Cart = () => {
                                     className="flex items-center gap-3 mt-4"
                                   >
                                     <Button
-                                      variant="outline"
+                                      variant="ghost"
                                       size="icon"
-                                      className="h-8 w-8 hover:bg-cyan-500 hover:text-white hover:border-cyan-500 transition-all duration-300"
+                                      className="h-8 w-8 hover:bg-transparent hover:text-foreground disabled:pointer-events-none "
                                       disabled={item.quantity === 1}
                                       onClick={() =>
                                         removeOne(item.product_id, user)
@@ -214,9 +214,9 @@ const Cart = () => {
                                       {item.quantity}
                                     </span>
                                     <Button
-                                      variant="outline"
+                                      variant="ghost"
                                       size="icon"
-                                      className="h-8 w-8 hover:bg-cyan-500 hover:text-white hover:border-cyan-500 transition-all duration-300"
+                                      className="h-8 w-8 hover:bg-transparent hover:text-foreground"
                                       onClick={() =>
                                         addOne(item.product_id, user)
                                       }

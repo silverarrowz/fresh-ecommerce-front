@@ -80,7 +80,7 @@ const Footer = () => {
                 <Input
                   type="email"
                   placeholder="Ваш E-mail"
-                  className="rounded-r-none bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-primary"
+                  className="border-0 border-b border-b-slate-600 text-white placeholder:text-slate-500 focus-visible:border-b-white p-0"
                 />
                 <Button
                   type="submit"
