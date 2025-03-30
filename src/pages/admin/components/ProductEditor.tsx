@@ -62,6 +62,7 @@ interface ProductEditorProps {
   editingProduct?: Product | null;
   categories: string[];
   onProductUpdate?: (product: Product) => void;
+  isLoading: boolean;
 }
 
 export const ProductEditor = ({
@@ -71,6 +72,7 @@ export const ProductEditor = ({
   editingProduct,
   categories,
   onProductUpdate,
+  isLoading,
 }: ProductEditorProps) => {
   const [imagesToDelete, setImagesToDelete] = useState<number[]>([]);
   const [originalProduct, setOriginalProduct] = useState<Product | null>(null);
@@ -322,7 +324,11 @@ export const ProductEditor = ({
                     Отменить
                   </Button>
                   <Button type="submit" className="cursor-pointer">
-                    {editingProduct ? "Сохранить" : "Добавить"}
+                    {isLoading
+                      ? "Сохраняем..."
+                      : editingProduct
+                      ? "Сохранить"
+                      : "Добавить"}
                   </Button>
                 </DialogFooter>
               </form>

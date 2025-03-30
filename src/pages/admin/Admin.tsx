@@ -16,6 +16,7 @@ const Admin = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [activeTab, setActiveTab] = useState("products");
+  const [isEditorLoading, setIsEditorLoading] = useState(false);
 
   const { isAdmin, user } = useAuth();
   const navigate = useNavigate();
@@ -68,6 +69,7 @@ const Admin = () => {
       formData.append("imagesToDelete", JSON.stringify(data.imagesToDelete));
     }
 
+    setIsEditorLoading(true);
     try {
       if (editingProduct) {
         const response = await updateProduct(
@@ -87,6 +89,7 @@ const Admin = () => {
         setProducts((prevProducts) => [newProduct, ...prevProducts]);
       }
       handleCloseDialog();
+      setIsEditorLoading(false);
     } catch (error) {
       console.error(
         `Ошибка при ${editingProduct ? "обновлении" : "создании"} продукта:`,
@@ -217,6 +220,7 @@ const Admin = () => {
         </div>
 
         <ProductEditor
+          isLoading={isEditorLoading}
           open={openDialog}
           onOpenChange={setOpenDialog}
           onSubmit={handleSubmit}
