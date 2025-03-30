@@ -76,7 +76,7 @@ const Admin = () => {
           editingProduct.id.toString(),
           formData
         );
-        const updatedProduct = response["0"];
+        const updatedProduct = response["product"];
         setProducts((prevProducts) => {
           return prevProducts.map((p) =>
             p.id === updatedProduct.id ? updatedProduct : p
@@ -85,7 +85,7 @@ const Admin = () => {
         setEditingProduct(updatedProduct);
       } else {
         const response = await createProduct(formData);
-        const newProduct = response["0"];
+        const newProduct = response["product"];
         setProducts((prevProducts) => [newProduct, ...prevProducts]);
       }
       handleCloseDialog();

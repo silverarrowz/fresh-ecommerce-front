@@ -42,7 +42,7 @@ export const getProductsByTag = async (tag: string): Promise<Product[]> => {
 }
 
 export const createProduct = async (productData: FormData): Promise<{
-    "0": Product;
+    "product": Product;
     message: string;
 }> => {
     const res = await api.post('/products', productData, {
@@ -54,7 +54,7 @@ export const createProduct = async (productData: FormData): Promise<{
 }
 
 export const updateProduct = async (id: string, productData: FormData): Promise<{
-    "0": Product;
+    "product": Product;
     message: string;
 }> => {
     productData.append('_method', 'PUT');
