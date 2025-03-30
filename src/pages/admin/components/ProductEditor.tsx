@@ -149,7 +149,7 @@ export const ProductEditor = ({
             {editingProduct ? "Редактировать" : "Добавить товар"}
           </DialogTitle>
         </DialogHeader>
-        <div className="flex gap-4">
+        <div className="flex gap-4 relative max-h-[36rem]  overflow-y-scroll">
           <div className="w-1/2">
             <Form {...form}>
               <form
@@ -164,7 +164,7 @@ export const ProductEditor = ({
                   onSubmit({ ...data, imagesToDelete });
                   form.reset();
                 })}
-                className="space-y-4 max-h-[36rem] overflow-y-scroll p-2"
+                className="space-y-4  p-2"
               >
                 <FormField
                   control={form.control}
@@ -329,7 +329,7 @@ export const ProductEditor = ({
             </Form>
           </div>
           {/* Превью изображений */}
-          <div className="w-1/2">
+          <div className="w-1/2 sticky top-0">
             <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50/50 rounded-lg">
               {/* Изображения из базы данных */}
               {getDisplayImages().map((image) => (
