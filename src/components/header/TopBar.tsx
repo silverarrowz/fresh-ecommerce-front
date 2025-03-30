@@ -48,14 +48,14 @@ const TopBar = () => {
             ) : (
               <div className="flex gap-4">
                 <Link
-                  to="/auth"
+                  to="/auth?action=login"
                   className="hover:text-cyan-400 transition-colors "
                 >
                   Вход
                 </Link>
 
                 <Link
-                  to="/auth"
+                  to="/auth?action=register"
                   className="hover:text-cyan-400 transition-colors"
                 >
                   Регистрация

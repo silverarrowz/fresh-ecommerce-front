@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useNavigate, Link } from "react-router";
+import { useNavigate, Link, useSearchParams } from "react-router";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -46,8 +46,11 @@ interface ApiError {
 const AuthPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { setUser, user } = useAuth();
+
+  const tab = searchParams.get("action");
 
   const loginForm = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -106,7 +109,7 @@ const AuthPage = () => {
   }, [user, navigate]);
 
   return (
-    <div className="container flex h-screen w-screen flex-col items-center justify-center">
+    <div className="container flex h-screen w-screen flex-col items-center justify-center mx-auto">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">
@@ -119,7 +122,14 @@ const AuthPage = () => {
               {error}
             </div>
           )}
-          <Tabs defaultValue="login" className="w-full">
+          <Tabs
+            defaultValue={tab || "login"}
+            className="w-full"
+            onValueChange={(value) => {
+              setError(null);
+              setSearchParams({ action: value });
+            }}
+          >
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger className="cursor-pointer" value="login">
                 Вход
