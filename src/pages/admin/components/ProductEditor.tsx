@@ -341,9 +341,7 @@ export const ProductEditor = ({
               {getDisplayImages().map((image) => (
                 <div key={image.id} className="relative aspect-square">
                   <img
-                    src={`${import.meta.env.VITE_BASE_URL}/storage/${
-                      image.path
-                    }`}
+                    src={image.url}
                     alt="Preview"
                     className="w-full h-full object-cover rounded-md"
                   />

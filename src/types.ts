@@ -2,6 +2,7 @@ export type Category = 'Протеиновые батончики и печен�
 
 interface ProductImage {
     id: number;
+    url: string;
     product_id: number;
     path: string;
     created_at: string;
@@ -50,7 +51,7 @@ interface ProductImage {
     quantity: number;
     price: string;
     title: string;
-    image: string;
+    image: ProductImage;
   }
 
 export interface Order {

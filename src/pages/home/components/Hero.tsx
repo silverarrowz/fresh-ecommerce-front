@@ -70,9 +70,7 @@ export default function Hero() {
                   <div className="w-full h-full animate-pulse" />
                 ) : featuredProduct?.images[0] ? (
                   <img
-                    src={`${import.meta.env.VITE_BASE_URL}/storage/${
-                      featuredProduct.images[0].path
-                    }`}
+                    src={featuredProduct.images[0].url}
                     alt={featuredProduct.title}
                     width={600}
                     height={600}

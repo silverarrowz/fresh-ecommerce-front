@@ -66,9 +66,7 @@ const Home = () => {
                     <div className="w-full h-full bg-black/5 animate-pulse" />
                   ) : featuredProduct?.images[0] ? (
                     <img
-                      src={`${import.meta.env.VITE_BASE_URL}/storage/${
-                        featuredProduct.images[0].path
-                      }`}
+                      src={featuredProduct.images[0].url}
                       alt={featuredProduct.title}
                       className="object-cover w-full h-full"
                     />

@@ -106,9 +106,7 @@ const SuccessPage = () => {
                       >
                         <div className="h-16 w-16 bg-white rounded-lg flex items-center justify-center overflow-hidden">
                           <img
-                            src={`${import.meta.env.VITE_BASE_URL}/storage/${
-                              item.image
-                            }`}
+                            src={item.image}
                             alt={item.title}
                             className="h-14 w-14 object-cover"
                           />

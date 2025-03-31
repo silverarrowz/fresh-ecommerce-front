@@ -21,6 +21,7 @@ const Account = () => {
       try {
         const data = await fetchUserOrders();
         setOrders(data.orders);
+        console.log(data);
       } catch (error) {
         console.error("Error fetching orders:", error);
       } finally {
@@ -186,9 +187,7 @@ const Account = () => {
                                     <div className="h-16 w-16 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
                                       {item.image ? (
                                         <img
-                                          src={`${
-                                            import.meta.env.VITE_BASE_URL
-                                          }/storage/${item.image}`}
+                                          src={item.image}
                                           alt={item.title}
                                           className="h-full w-full object-cover transform hover:scale-105 transition-transform duration-300"
                                         />

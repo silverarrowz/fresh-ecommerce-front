@@ -180,9 +180,7 @@ const Cart = () => {
                                 <div className="flex-shrink-0">
                                   <div className="h-24 w-24 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
                                     <img
-                                      src={`${
-                                        import.meta.env.VITE_BASE_URL
-                                      }/storage/${displayData.image}`}
+                                      src={displayData.image}
                                       alt={displayData.title}
                                       className="h-full w-full object-cover transform group-hover:scale-105 transition-transform duration-300"
                                     />

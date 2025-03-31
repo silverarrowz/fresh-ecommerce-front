@@ -105,9 +105,7 @@ const Product = () => {
               className="h-full w-full"
             >
               <img
-                src={`${import.meta.env.VITE_BASE_URL}/storage/${
-                  product!.images[selectedImageIndex].path
-                }`}
+                src={product!.images[selectedImageIndex].url}
                 alt={product!.title}
                 className="h-full w-full object-cover object-center"
               />
@@ -146,9 +144,7 @@ const Product = () => {
                   }`}
                 >
                   <img
-                    src={`${import.meta.env.VITE_BASE_URL}/storage/${
-                      image.path
-                    }`}
+                    src={image.url}
                     alt={`${product!.title} thumbnail ${index + 1}`}
                     className="object-cover object-center"
                   />

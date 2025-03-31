@@ -41,13 +41,13 @@ const CartSheet = ({
       return {
         title: item.product.title,
         price: item.product.price,
-        image: item.product.images[0]?.path || "",
+        image: item.product.images[0]?.url || "",
       };
     }
     return {
       title: item.title,
       price: item.price,
-      image: item.image,
+      image: item.image.url,
     };
   };
 
@@ -128,9 +128,7 @@ const CartSheet = ({
                         className="flex-shrink-0"
                       >
                         <img
-                          src={`${import.meta.env.VITE_BASE_URL}/storage/${
-                            displayData.image
-                          }`}
+                          src={displayData.image}
                           alt={displayData.title}
                           className="w-20 h-20 object-cover rounded-md hover:opacity-90 transition-opacity"
                         />

@@ -44,9 +44,7 @@ const ProductCard = ({
           <div className="relative aspect-[4/5] overflow-hidden">
             {product.images.length > 0 ? (
               <img
-                src={`${import.meta.env.VITE_BASE_URL}/storage/${
-                  product.images[0].path
-                }`}
+                src={product!.images[0].url}
                 alt={product.title}
                 className="h-full w-full object-cover object-center transition-all duration-500 group-hover:scale-105"
               />
