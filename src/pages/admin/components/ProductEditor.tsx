@@ -151,8 +151,8 @@ export const ProductEditor = ({
             {editingProduct ? "Редактировать" : "Добавить товар"}
           </DialogTitle>
         </DialogHeader>
-        <div className="flex gap-4 relative max-h-[36rem]  overflow-y-scroll">
-          <div className="w-1/2">
+        <div className="flex flex-col md:flex-row gap-4 relative max-h-[36rem]  overflow-y-scroll">
+          <div className="w-full md:w-1/2">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit((data) => {
@@ -335,7 +335,7 @@ export const ProductEditor = ({
             </Form>
           </div>
           {/* Превью изображений */}
-          <div className="w-1/2 sticky top-0">
+          <div className="w-full md:w-1/2 sticky top-0">
             <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50/50 rounded-lg">
               {/* Изображения из базы данных */}
               {getDisplayImages().map((image) => (

@@ -145,78 +145,118 @@ const Admin = () => {
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="flex space-x-8 mb-8">
+        <div className="flex flex-wrap justify-center gap-4 mb-8">
           <button
             onClick={() => setActiveTab("products")}
             className={cn(
-              "flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors",
+              "flex items-center space-x-0 md:space-x-2 px-4 py-2 rounded-lg transition-colors",
               activeTab === "products"
-                ? "bg-cyan-500 text-white"
+                ? "bg-cyan-400 text-white"
                 : "text-gray-600 hover:bg-gray-100"
             )}
           >
             <Package className="h-5 w-5" />
-            <span>Товары</span>
+            <span className="hidden md:block">Товары</span>
           </button>
           <button
             onClick={() => setActiveTab("users")}
             className={cn(
-              "flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors",
+              "flex items-center space-x-0 md:space-x-2 px-4 py-2 rounded-lg transition-colors",
               activeTab === "users"
-                ? "bg-cyan-500 text-white"
+                ? "bg-cyan-400 text-white"
                 : "text-gray-600 hover:bg-gray-100"
             )}
           >
             <Users className="h-5 w-5" />
-            <span>Пользователи</span>
+            <span className="hidden md:block">Пользователи</span>
           </button>
           <button
             onClick={() => setActiveTab("analytics")}
             className={cn(
-              "flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors",
+              "flex items-center space-x-0 md:space-x-2 px-4 py-2 rounded-lg transition-colors",
               activeTab === "analytics"
-                ? "bg-cyan-500 text-white"
+                ? "bg-cyan-400 text-white"
                 : "text-gray-600 hover:bg-gray-100"
             )}
           >
             <BarChart className="h-5 w-5" />
-            <span>Аналитика</span>
+            <span className="hidden md:block">Аналитика</span>
           </button>
           <button
             onClick={() => setActiveTab("settings")}
             className={cn(
-              "flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors",
+              "flex items-center space-x-0 md:space-x-2 px-4 py-2 rounded-lg transition-colors",
               activeTab === "settings"
-                ? "bg-cyan-500 text-white"
+                ? "bg-cyan-400 text-white"
                 : "text-gray-600 hover:bg-gray-100"
             )}
           >
             <Settings className="h-5 w-5" />
-            <span>Настройки</span>
+            <span className="hidden md:block">Настройки</span>
           </button>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">
-              Управление товарами
-            </h2>
-            <Button
-              onClick={() => handleOpenDialog()}
-              className="bg-cyan-500 hover:bg-cyan-400 hover:shadow-[0_0_28px_rgba(0,211,243,0.63)] transition-all duration-300 cursor-pointer"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              Добавить товар
-            </Button>
-          </div>
+          {activeTab === "products" && (
+            <>
+              <div className="flex flex-col md:flex-row gap-y-4 justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Управление товарами
+                </h2>
+                <Button
+                  onClick={() => handleOpenDialog()}
+                  className="bg-cyan-500 hover:bg-cyan-400 hover:shadow-[0_0_28px_rgba(0,211,243,0.63)] transition-all duration-300 cursor-pointer"
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Добавить товар
+                </Button>
+              </div>
 
-          <div className="rounded-lg border border-gray-200 overflow-hidden">
-            <ProductsTable
-              products={products}
-              handleDelete={handleDelete}
-              handleOpenDialog={handleOpenDialog}
-            />
-          </div>
+              <div className="rounded-lg border border-gray-200 overflow-hidden">
+                <ProductsTable
+                  products={products}
+                  handleDelete={handleDelete}
+                  handleOpenDialog={handleOpenDialog}
+                />
+              </div>
+            </>
+          )}
+
+          {activeTab === "users" && (
+            <div className="flex flex-col items-center justify-center py-12">
+              <Users className="h-12 w-12 text-gray-400 mb-4" />
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Управление пользователями
+              </h2>
+              <p className="text-gray-500 text-center">
+                Функционал управления пользователями находится в разработке
+              </p>
+            </div>
+          )}
+
+          {activeTab === "analytics" && (
+            <div className="flex flex-col items-center justify-center py-12">
+              <BarChart className="h-12 w-12 text-gray-400 mb-4" />
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Аналитика
+              </h2>
+              <p className="text-gray-500 text-center">
+                Функционал аналитики находится в разработке
+              </p>
+            </div>
+          )}
+
+          {activeTab === "settings" && (
+            <div className="flex flex-col items-center justify-center py-12">
+              <Settings className="h-12 w-12 text-gray-400 mb-4" />
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Настройки
+              </h2>
+              <p className="text-gray-500 text-center">
+                Функционал настроек находится в разработке
+              </p>
+            </div>
+          )}
         </div>
 
         <ProductEditor

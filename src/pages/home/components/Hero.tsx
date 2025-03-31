@@ -1,9 +1,9 @@
 import { Link } from "react-router";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { usePrefetchFeaturedProduct, useProduct } from "@/hooks/useProducts";
 import { useEffect } from "react";
+import { ButtonLink } from "@/components/ui/button-link";
 
 export default function Hero() {
   const { data: featuredProduct, isLoading } = useProduct("4");
@@ -40,20 +40,22 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button
+            <ButtonLink
+              to="/products"
               size="lg"
               className="group hover:bg-cyan-300 transition-all duration-300 hover:shadow-[0_0_34px_2px_rgba(0,211,243,0.63)]"
             >
               Смотреть каталог
               <ArrowRight className="hidden md:block ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-            <Button
+            </ButtonLink>
+            <ButtonLink
+              to="/products"
               size="lg"
               variant="link"
               className="bg-transparent hover:bg-cyan-100 hover:text-gray-900 transition-all duration-300"
             >
               Подробнее
-            </Button>
+            </ButtonLink>
           </div>
         </motion.div>
 
@@ -64,7 +66,10 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.3 }}
         >
           <div className="relative aspect-square max-w-[500px] mx-auto">
-            <div className="absolute inset-0 flex items-center justify-center">
+            <Link
+              to={`/products/${featuredProduct?.id}`}
+              className="absolute inset-0 flex items-center justify-center"
+            >
               <div className="relative w-[80%] h-[80%]">
                 {isLoading ? (
                   <div className="w-full h-full animate-pulse" />
@@ -82,7 +87,7 @@ export default function Hero() {
                   </div>
                 )}
               </div>
-            </div>
+            </Link>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -91,18 +96,18 @@ export default function Hero() {
               className="absolute bottom-12 md:-bottom-4 right-0 bg-white/80 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-white/10 max-w-[80%] transition-colors"
             >
               <Link to={`/products/${featuredProduct?.id}`}>
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-medium text-lg">
+                <div className="flex flex-col gap-1 justify-between items-start mb-2">
+                  <p className="font-bold text-2xl xl:text-3xl">
+                    {featuredProduct?.price} ₽
+                  </p>
+                  <h3 className="font-medium text-sm sm:text-base md:text-lg">
                     {featuredProduct?.title}
                   </h3>
-                  <span className="font-bold xl:text-3xl">
-                    {featuredProduct?.price} ₽
-                  </span>
                 </div>
                 <p className="text-sm text-zinc-400 mb-4 line-clamp-2">
                   {featuredProduct?.description}
                 </p>
-                <div className="text-sm font-medium flex items-center transition-colors">
+                <div className="text-sm font-medium flex items-center hover:text-cyan-400 transition-colors">
                   Подробнее <ArrowRight className="ml-1 h-3 w-3" />
                 </div>
               </Link>

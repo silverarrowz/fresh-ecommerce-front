@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { LogOut, User, Settings } from "lucide-react";
 import { FiMapPin, FiPhone } from "react-icons/fi";
 import { useAuth } from "@/context/AuthContext";
 
@@ -25,24 +26,46 @@ const TopBar = () => {
             {user ? (
               <div className="flex gap-4">
                 {user.role === "admin" && (
-                  <Link
-                    to="/admin"
-                    className=" hover:text-cyan-400 transition-colors "
-                  >
-                    Админ-панель
-                  </Link>
+                  <>
+                    <Link
+                      to="/admin"
+                      className="text-cyan-500 hover:text-cyan-400 transition-colors hidden sm:flex items-center gap-1"
+                    >
+                      Админ-панель
+                    </Link>
+                    <Link
+                      to="/admin"
+                      className="text-white hover:text-cyan-400 transition-colors sm:hidden items-center gap-1"
+                    >
+                      <Settings className="w-5 h-5" />
+                    </Link>
+                  </>
                 )}
                 <Link
                   to="/account"
-                  className=" hover:text-cyan-400 transition-colors "
+                  className=" hover:text-cyan-400 transition-colors hidden sm:flex items-center gap-1"
                 >
+                  <User className="w-4 h-4" />
                   Мой аккаунт
                 </Link>
+                <Link
+                  to="/account"
+                  className=" hover:text-cyan-400 transition-colors sm:hidden gap-1"
+                >
+                  <User className="w-5 h-5" />
+                </Link>
                 <button
-                  className="cursor-pointer text-gray-300 hover:text-cyan-400 transition-colors "
+                  className="cursor-pointer text-gray-300 hover:text-cyan-400 transition-colors hidden sm:flex items-center gap-1"
                   onClick={logout}
                 >
+                  <LogOut className="w-4 h-4" />
                   Выйти
+                </button>
+                <button
+                  className="cursor-pointer text-gray-300 hover:text-cyan-400 transition-colors sm:hidden gap-1"
+                  onClick={logout}
+                >
+                  <LogOut className="w-5 h-5" />
                 </button>
               </div>
             ) : (

@@ -21,7 +21,6 @@ const Account = () => {
       try {
         const data = await fetchUserOrders();
         setOrders(data.orders);
-        console.log(data);
       } catch (error) {
         console.error("Error fetching orders:", error);
       } finally {

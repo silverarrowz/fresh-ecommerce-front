@@ -4,7 +4,7 @@ import { ButtonLink } from "@/components/ui/button-link";
 export default function OutroSection() {
   return (
     <section className="w-full overflow-hidden mx-auto">
-      <div className="relative min-h-screen flex items-center">
+      <div className="relative py-12 sm:py-0 sm:min-h-screen flex items-center">
         <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-green-500" />
         <div className="absolute inset-0 bg-[url('/images/pattern.png')] opacity-10" />
 
@@ -23,7 +23,7 @@ export default function OutroSection() {
                 питания, как для профессиональных спортсменов, так и для
                 сторонников здорового образа жизни.
               </p>
-              <div className="flex flex-wrap gap-4 pt-4 pb-4">
+              <div className="flex flex-col md:flex-row gap-4 pt-4 pb-4 ">
                 <ButtonLink
                   to="#"
                   size="lg"
@@ -42,7 +42,7 @@ export default function OutroSection() {
                 </ButtonLink>
               </div>
             </div>
-            <div className="relative h-[600px] -ml-12 md:ml-0">
+            <div className="relative h-[600px] -ml-12 md:ml-0 hidden sm:block">
               <div className="absolute  -top-8 -right-8 w-[110%] h-[110%]">
                 <div className="relative h-full w-full">
                   <div className="absolute inset-0 bg-gradient-to-l from-green-600/50 to-transparent md:rounded-2xl" />

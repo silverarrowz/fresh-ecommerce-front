@@ -3,6 +3,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetDescription,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -72,11 +73,8 @@ const CartSheet = ({
   };
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange} aria-labelledby="cart-sheet">
-      <SheetContent
-        className="w-full sm:max-w-lg z-250 flex flex-col border-none"
-        aria-describedby="cart-sheet-description"
-      >
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent className="w-full sm:max-w-lg z-250 flex flex-col border-none">
         <SheetHeader className="pb-4">
           <SheetTitle className="text-xl font-medium text-center">
             <Link
@@ -88,6 +86,10 @@ const CartSheet = ({
               <span className="absolute bottom-0 left-0 w-full h-1 bg-cyan-500/10 rounded-full" />
             </Link>
           </SheetTitle>
+          <SheetDescription className="sr-only">
+            Содержимое вашей корзины. Здесь вы можете просматривать и
+            редактировать товары и оформить заказ.
+          </SheetDescription>
         </SheetHeader>
 
         {items.length === 0 ? (
