@@ -29,13 +29,13 @@ const Cart = () => {
       return {
         title: item.product.title,
         price: item.product.price,
-        image: item.product.images[0]?.path || "",
+        image: item.product.images[0]?.url || "",
       };
     }
     return {
       title: item.title,
       price: item.price,
-      image: item.image,
+      image: item.image.url,
     };
   };
 

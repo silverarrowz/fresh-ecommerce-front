@@ -47,7 +47,7 @@ const CartSheet = ({
     return {
       title: item.title,
       price: item.price,
-      image: item.image.url,
+      image: item.image?.url || "",
     };
   };
 

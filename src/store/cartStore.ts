@@ -21,7 +21,7 @@ const productToLocalCartItem = (product: Product, quantity: number): LocalCartIt
   quantity,
   price: product.price,
   title: product.title,
-  image: product.images[0]?.path || '',
+  image: product.images[0],
 });
 
 const useCartStore = create<CartState>((set, get) => ({
