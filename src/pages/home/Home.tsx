@@ -174,7 +174,7 @@ const Home = () => {
                   margin: "-50px",
                   amount: 0.3,
                 }}
-                className="group p-8 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 border border-white/10"
+                className="group p-8 bg-white/5 backdrop-blur-sm hover:bg-white/10 border border-white/10"
               >
                 <div className="h-12 w-12 flex items-center justify-center bg-white/10 text-white mb-6 group-hover:scale-110 transition-transform duration-300">
                   <Check className="h-6 w-6" />
