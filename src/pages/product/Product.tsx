@@ -187,7 +187,7 @@ const Product = () => {
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <div className="flex items-center h-12 w-full sm:w-42">
               <button
-                className="h-full px-4   transition-colors"
+                className="h-full px-4 transition-colors disabled:pointer-events-none"
                 onClick={() => setQuantity(quantity - 1)}
                 disabled={quantity <= 1}
               >
