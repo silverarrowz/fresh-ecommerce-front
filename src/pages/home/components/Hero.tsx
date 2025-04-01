@@ -20,14 +20,18 @@ export default function Hero() {
   };
 
   return (
-    <section className="mt-20 md:mt-0 relative overflow-hidden bg-white min-h-[90vh] flex flex-col justify-center">
+    <motion.section className="pt-32 sm:pt-16 lg:pt-32 relative overflow-hidden bg-white min-h-[90vh] flex flex-col justify-center">
       <div className="container relative z-10 px-4 mx-auto grid gap-12 md:grid-cols-2 items-center">
         <motion.div {...fadeInUpDelay} className="space-y-8 md:space-y-12">
           <div className="space-y-4">
             <h2 className="text-sm md:text-base uppercase tracking-widest text-gray-500 font-medium">
               Новая коллекция
             </h2>
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight leading-[0.9] md:leading-[0.9]">
+            <h1
+              className="font-bold tracking-tight leading-8 sm:leading-14 xl:leading-16
+            text-[clamp(2rem,7vw,7rem)] 
+            "
+            >
               <span className="block mt-1">Энергия</span>
               <span className="block mt-1 text-cyan-500">
                 для ваших достижений
@@ -61,32 +65,32 @@ export default function Hero() {
 
         <motion.div
           className="relative"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          <div className="relative aspect-square max-w-[500px] mx-auto">
+          <div className="relative max-w-[500px] mx-auto">
             <Link
               to={`/products/${featuredProduct?.id}`}
-              className="absolute inset-0 flex items-center justify-center"
+              className="flex items-center justify-center"
             >
-              <div className="relative w-[80%] h-[80%]">
+              <motion.div className="relative w-[80%] h-0 pb-[100%] overflow-hidden">
                 {isLoading ? (
                   <div className="w-full h-full animate-pulse" />
                 ) : featuredProduct?.images[0] ? (
                   <img
                     src={featuredProduct.images[0].url}
                     alt={featuredProduct.title}
-                    width={600}
-                    height={600}
-                    className="object-cover"
+                    className="object-cover object-center w-full h-full absolute inset-0"
+                    loading="eager"
+                    decoding="async"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
                     <span className="text-gray-500">Нет изображения</span>
                   </div>
                 )}
-              </div>
+              </motion.div>
             </Link>
 
             <motion.a
@@ -114,6 +118,6 @@ export default function Hero() {
           </div>
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
