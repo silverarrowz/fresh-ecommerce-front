@@ -1,54 +1,73 @@
-# React + TypeScript + Vite
+# Интернет-магазин спортивного питания Fresh
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Современный интернет-магазин с админ-панелью, созданный с помощью React 19, Laravel 12 в роли API, и базы данных PostgreSQL.
 
-Currently, two official plugins are available:
+![Fresh E-commerce Banner](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/s6.webp)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Live Demo
 
-## Expanding the ESLint configuration
+[Посмотреть сайт](https://fresh-ecomm.com)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Features
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- 🎨 современный интерфейс и дизайн с продуманным UI/UX и плавными анимациями;
+- 🔍 поиск в режиме реального времени по названию и категории, с возможностью фильтрации и сортировки;
+- 🛒 корзина, прикрепленная к пользователю в БД, либо сохраняемая в localStorage и синхронизируемая с пользователем при входе;
+- 📱 адаптивная и кроссбраузерная вёрстка;
+- ⚡ интеграция со Stripe для осуществления заказов;
+- 👩 личный кабинет с историей заказов;
+- 🛠️ админ-панель для управления товарами;
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Главные технологии
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Frontend
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- React 19
+- TypeScript 5
+- Vite
+- Tailwind CSS, Shadcn UI, React Icons - стили
+- Framer Motion - анимации
+- axios и React Query - запросы к API
+- React Router
+- Zustand - стейт-менеджер корзины
+- React Hook Form и Zod - работа с формами в админ-панели
+
+### Backend
+
+- Laravel 12 - PHP-фреймворк
+- PostgreSQL - база данных
+- Supabase Storage - хранилище медиа
+- Sanctum - аутентификация
+- Stripe - платёжная система
+- Render и Docker - хостинг
+
+## 📸 Скриншоты
+
+### Корзина
+
+![Корзина](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/s4.webp)
+
+### Личный кабинет
+
+![Личный кабинет](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/s3.webp)
+
+### Поиск
+
+![Поиск](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/s2.webp)
+
+### Админ-панель
+
+![Админ-панель](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/s1.webp)
+
+## Планы по улучшению
+
+- возможность оставлять оценки и отзывы на товары;
+- возможность добавлять товары в избранное;
+- больше возможностей админ-панели, отображение статистики;
+- добавление новых характеристик товарам и вариантов фильтрации;
+- возможность выбора темы;
+- оптимизация SEO, accessibility;
+
+##
+
+Предложения по доработке приветствуются! :)

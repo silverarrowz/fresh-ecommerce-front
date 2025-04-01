@@ -82,7 +82,7 @@
    @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-white text-foreground font-inter;
+    @apply bg-white text-foreground font-inter selection:bg-green-200/45;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -98,10 +98,7 @@
 
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  
+
   .section-padding {
     @apply py-24;
   }
