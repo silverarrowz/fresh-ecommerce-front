@@ -2,11 +2,11 @@
 
 Современный интернет-магазин с админ-панелью, созданный с помощью React 19, Laravel 12 в роли API, и базы данных PostgreSQL.
 
-![Fresh E-commerce Banner](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/s6.webp)
+![Fresh E-commerce Banner](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/h1.webp)
 
 ## Live Demo
 
-[Посмотреть сайт](https://fresh-ecomm.com)
+[Посмотреть сайт](https://fresh-ecommerce-front.vercel.app)
 
 ## Features
 
@@ -45,19 +45,19 @@
 
 ### Корзина
 
-![Корзина](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/s4.webp)
+![Корзина](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/h5.webp)
 
 ### Личный кабинет
 
-![Личный кабинет](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/s3.webp)
+![Личный кабинет](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/h4.webp)
 
 ### Поиск
 
-![Поиск](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/s2.webp)
+![Поиск](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/h3.webp)
 
 ### Админ-панель
 
-![Админ-панель](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/s1.webp)
+![Админ-панель](https://myhccconvbpymriamzny.supabase.co/storage/v1/object/public/fresh/screenshots/h2.webp)
 
 ## Планы по улучшению
 
