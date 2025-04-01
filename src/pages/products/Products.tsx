@@ -18,6 +18,7 @@ const Products = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [totalProducts, setTotalProducts] = useState(0);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -26,6 +27,7 @@ const Products = () => {
       setProducts(data.data);
       setTotalPages(data.last_page);
       setCurrentPage(data.current_page);
+      setTotalProducts(data.total);
       setIsLoading(false);
     };
     fetchProducts();
@@ -51,7 +53,11 @@ const Products = () => {
       <div className="mb-12">
         <Breadcrumbs items={breadcrumbItems} />
       </div>
-      <h1 className="text-2xl font-extrabold text-gray-900 mb-16">Каталог</h1>
+      <h1 className="text-2xl font-extrabold text-gray-900 relative inline-block mb-6">
+        Каталог
+        <span className="absolute bottom-0 left-0 w-full h-1 bg-cyan-500/10 rounded-full" />
+      </h1>
+      <p className="text-sm text-gray-500 mb-16">{totalProducts} товаров</p>
 
       <motion.div
         key={currentPage}
@@ -59,7 +65,7 @@ const Products = () => {
         initial="hidden"
         animate="show"
         exit={{ opacity: 0 }}
-        className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8 text-center w-full"
+        className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8 w-full"
       >
         {isLoading
           ? Array.from({ length: 8 }).map((_, index) => (

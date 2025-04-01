@@ -136,17 +136,25 @@ const Product = () => {
               {product!.images.map((image, index) => (
                 <button
                   key={image.id}
-                  onClick={() => setSelectedImageIndex(index)}
+                  onClick={() => {
+                    setSelectedImageIndex(index);
+                  }}
                   className={`relative h-20 w-20 flex-shrink-0 overflow-hidden border cursor-pointer ${
-                    selectedImageIndex === index
-                      ? "border-black"
-                      : "border-black/5"
+                    selectedImageIndex === index ? "pointer-events-none" : ""
                   }`}
                 >
+                  <div
+                    className={`w-full h-full bg-black  absolute top-0 left-0 z-20 peer  ${
+                      selectedImageIndex === index
+                        ? "opacity-30 pointer-events-none"
+                        : "opacity-0"
+                    }`}
+                  />
                   <img
                     src={image.url}
                     alt={`${product!.title} thumbnail ${index + 1}`}
-                    className="object-cover object-center"
+                    className="object-cover object-center w-full h-full relative z-10 
+                    peer-hover:scale-110 transition-all duration-500"
                   />
                 </button>
               ))}
@@ -241,7 +249,9 @@ const Product = () => {
 
           <div className="mt-8">
             <h3 className="text-sm font-medium text-black">Категория</h3>
-            <p className="mt-2 text-sm text-black/60">{product!.category}</p>
+            <p className="mt-2 text-sm text-black/60">
+              {product!.category.name}
+            </p>
           </div>
         </div>
       </div>

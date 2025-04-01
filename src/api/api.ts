@@ -1,4 +1,4 @@
-import { CartItem, Order, OrderItem, Product } from "@/types";
+import { CartItem, Category, Order, OrderItem, Product } from "@/types";
 import { api } from "./axios"
 
 // Товары
@@ -17,6 +17,7 @@ export const getProductsWithPagination = async (page: number = 1, perPage: numbe
         data: Product[],
         last_page: number,
         current_page: number,
+        total: number,
 }> => {
     const res = await api.get('/products/paginated', {
         params: {
@@ -71,6 +72,17 @@ export const deleteProduct = async (id: string): Promise<void> => {
     return res.data
 }
 
+// Категории
+
+export const getCategories = async (): Promise<Category[]> => {
+    const res = await api.get('/categories');
+    return res.data;
+}
+
+export const getCategoryBySlug = async (slug: string): Promise<Category> => {
+    const res = await api.get(`/categories/${slug}`);
+    return res.data;
+}
 
 // Корзина
 
@@ -93,7 +105,6 @@ export const addProductToCart = async (productId: number, quantity: number): Pro
         console.log('Cart updated:', res.data);
         return res.data;
     } catch (error) {
-
         console.error('Error adding item to cart:', error instanceof Error ? error.message : 'Unknown error');
         throw error;
     }
@@ -120,7 +131,6 @@ export const removeFromCart = async (productId: number): Promise<CartItem[]> => 
         throw error;
     }
 }
-
 
 // Заказы
 
@@ -167,4 +177,25 @@ export const getOrderBySessionId = async (sessionId: string) => {
         console.error('Error fetching order by session ID:', error instanceof Error ? error.message : 'Unknown error');
         throw error;
     }
+}
+
+export const searchProducts = async (query: string, limit: number = 5): Promise<Product[]> => {
+    const res = await api.get('/products/search', {
+        params: {
+            query,
+            limit,
+        }
+    });
+
+    return res.data;
+}
+
+export const getProductsByCategory = async (categorySlug: string, limit: number = 12): Promise<Product[]> => {
+    const res = await api.get(`/products/category/${categorySlug}`, {
+        params: {
+            limit,
+        }
+    });
+    
+    return res.data;
 }

@@ -200,7 +200,7 @@ const Cart = () => {
                                     <Button
                                       variant="ghost"
                                       size="icon"
-                                      className="h-8 w-8 hover:bg-transparent hover:text-foreground disabled:pointer-events-none "
+                                      className="h-8 w-8 bg-cyan-300 rounded-full hover:bg-cyan-400 transition-colors duration-300hover:text-foreground disabled:pointer-events-none "
                                       disabled={item.quantity === 1}
                                       onClick={() =>
                                         removeOne(item.product_id, user)
@@ -208,13 +208,13 @@ const Cart = () => {
                                     >
                                       <Minus className="h-4 w-4" />
                                     </Button>
-                                    <span className="w-8 text-center font-medium">
+                                    <span className="w-8 text-center pl-1 font-medium">
                                       {item.quantity}
                                     </span>
                                     <Button
                                       variant="ghost"
                                       size="icon"
-                                      className="h-8 w-8 hover:bg-transparent hover:text-foreground"
+                                      className="h-8 w-8 bg-cyan-300 rounded-full hover:bg-cyan-400 transition-colors duration-300 hover:text-foreground"
                                       onClick={() =>
                                         addOne(item.product_id, user)
                                       }

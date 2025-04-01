@@ -5,15 +5,20 @@ import TopBar from "./TopBar";
 import Logo from "@/components/Logo";
 import HeaderNav from "./HeaderNav";
 import CartSheet from "@/components/CartSheet";
+import SearchSheet from "@/components/SearchSheet";
 import useCartStore from "@/store/cartStore";
 import { useAuth } from "@/context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { Category } from "@/types";
+import { getCategories } from "@/api/api";
 
 const Header = () => {
   const [showTopBar, setShowTopBar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const location = useLocation();
   const { user } = useAuth();
@@ -54,38 +59,11 @@ const Header = () => {
       id: 1,
       label: "Категории",
       path: "/",
-      links: [
-        {
-          id: 0,
-          label: "Протеины",
-          path: "#",
-        },
-        {
-          id: 1,
-          label: "Протеиновые батончики и печенье",
-          path: "#",
-        },
-        {
-          id: 2,
-          label: "Готовые завтраки",
-          path: "#",
-        },
-        {
-          id: 3,
-          label: "Изотоники",
-          path: "#",
-        },
-        {
-          id: 4,
-          label: "Витамины и БАДы",
-          path: "#",
-        },
-        {
-          id: 5,
-          label: "Креатин",
-          path: "#",
-        },
-      ],
+      links: categories.map((category) => ({
+        id: category.id,
+        label: category.name,
+        path: `/search?category=${category.slug}`,
+      })),
     },
     {
       id: 2,
@@ -131,6 +109,14 @@ const Header = () => {
   if (cartItems && cartItems.length > 0) {
     cartItemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   }
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const data = await getCategories();
+      setCategories(data);
+    };
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     fetchCart(user);
@@ -198,11 +184,14 @@ const Header = () => {
       </AnimatePresence>
 
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-20 bg-white ">
+        <div className="flex justify-start gap-24 items-center h-20 bg-white ">
           <Logo />
           <HeaderNav navLinks={navLinks} />
-          <article className="flex items-center space-x-6">
-            <button className="p-2 text-black/60 hover:text-black transition-colors">
+          <article className="flex items-center space-x-6 w-full justify-end">
+            <button
+              className="p-2 text-black/60 hover:text-black transition-colors"
+              onClick={() => setIsSearchOpen(true)}
+            >
               <FiSearch className="w-5 h-5" />
             </button>
             <Link
@@ -266,6 +255,7 @@ const Header = () => {
       </div>
 
       <CartSheet open={isCartOpen} onOpenChange={setIsCartOpen} />
+      <SearchSheet open={isSearchOpen} onOpenChange={setIsSearchOpen} />
     </header>
   );
 };

@@ -1,4 +1,10 @@
-export type Category = 'Протеиновые батончики и печенье' | 'Протеины' | 'Витамины и минералы' | 'Изотоники';
+export type Category = {
+    id: number;
+    name: string;
+    slug: string;
+    created_at: string;
+    updated_at: string;
+}
 
 interface ProductImage {
     id: number;
@@ -17,7 +23,7 @@ interface ProductImage {
     price_old: string | null;
     description: string;
     stock: number;
-    category: string;
+    category: Category;
     created_at: string;
     updated_at: string;
     images: ProductImage[];

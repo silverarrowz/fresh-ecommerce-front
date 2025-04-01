@@ -89,29 +89,28 @@ export default function Hero() {
               </div>
             </Link>
 
-            <motion.div
+            <motion.a
+              href={`/products/${featuredProduct?.id}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="absolute bottom-12 md:-bottom-4 right-0 bg-white/80 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-white/10 max-w-[80%] transition-colors"
             >
-              <Link to={`/products/${featuredProduct?.id}`}>
-                <div className="flex flex-col gap-1 justify-between items-start mb-2">
-                  <p className="font-bold text-2xl xl:text-3xl">
-                    {featuredProduct?.price} ₽
-                  </p>
-                  <h3 className="font-medium text-sm sm:text-base md:text-lg">
-                    {featuredProduct?.title}
-                  </h3>
-                </div>
-                <p className="text-sm text-zinc-400 mb-4 line-clamp-2">
-                  {featuredProduct?.description}
+              <div className="flex flex-col gap-1 justify-between items-start mb-2">
+                <p className="font-bold text-2xl xl:text-3xl">
+                  {featuredProduct?.price} ₽
                 </p>
-                <div className="text-sm font-medium flex items-center hover:text-cyan-400 transition-colors">
-                  Подробнее <ArrowRight className="ml-1 h-3 w-3" />
-                </div>
-              </Link>
-            </motion.div>
+                <h3 className="font-medium text-sm sm:text-base md:text-lg">
+                  {featuredProduct?.title}
+                </h3>
+              </div>
+              <p className="text-sm text-zinc-400 mb-4 line-clamp-2">
+                {featuredProduct?.description}
+              </p>
+              <div className="text-sm font-medium flex items-center hover:text-cyan-400 transition-colors duration-500">
+                Подробнее <ArrowRight className="ml-1 h-3 w-3" />
+              </div>
+            </motion.a>
           </div>
         </motion.div>
       </div>

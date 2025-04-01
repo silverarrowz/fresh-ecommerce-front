@@ -2,8 +2,13 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Home, Package, Settings, Users, BarChart } from "lucide-react";
 import { useProducts } from "@/hooks/useProducts";
-import { Product } from "@/types";
-import { createProduct, deleteProduct, updateProduct } from "@/api/api";
+import { Category, Product } from "@/types";
+import {
+  createProduct,
+  deleteProduct,
+  getCategories,
+  updateProduct,
+} from "@/api/api";
 import { ProductEditor, ProductFormValues } from "./components/ProductEditor";
 import ProductsTable from "./components/ProductsTable";
 import { Link, useNavigate } from "react-router";
@@ -17,6 +22,7 @@ const Admin = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [activeTab, setActiveTab] = useState("products");
   const [isEditorLoading, setIsEditorLoading] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const { isAdmin, user } = useAuth();
   const navigate = useNavigate();
@@ -33,10 +39,13 @@ const Admin = () => {
     }
   }, [fetchedProducts]);
 
-  // TODO: сделать категории таблицей в БД
-  const categories = Array.from(
-    new Set(products.map((product) => product.category))
-  );
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const categories = await getCategories();
+      setCategories(categories);
+    };
+    fetchCategories();
+  }, []);
 
   const handleOpenDialog = (product?: Product) => {
     setEditingProduct(product || null);
@@ -57,7 +66,7 @@ const Admin = () => {
     formData.append("price_old", data.price_old || "");
     formData.append("stock", data.stock);
     formData.append("description", data.description);
-    formData.append("category", data.category);
+    formData.append("category_id", data.category);
 
     if (data.images && Array.isArray(data.images)) {
       data.images.forEach((file) => {
@@ -103,7 +112,7 @@ const Admin = () => {
     formData.delete("price_old");
     formData.delete("stock");
     formData.delete("description");
-    formData.delete("category");
+    formData.delete("category_id");
   };
 
   const handleDelete = async (id: number) => {

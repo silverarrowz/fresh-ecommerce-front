@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 const AdminLayout = () => {
   return (
     <div className="min-h-screen">
-      <main className="pt-16 container mx-auto py-8 px-4">
+      <main className="pt-16 container mx-auto py-8 px-4 sm:px-0">
         <Outlet />
       </main>
       <Footer />

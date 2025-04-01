@@ -126,7 +126,7 @@ const Home = () => {
               className="text-4xl md:text-5xl font-space font-medium tracking-tight text-white mb-8"
             >
               Здоровый образ жизни, <br />
-              <span className="text-white/80">доступный для всех</span>
+              <span className="text-cyan-300">доступный для всех</span>
             </motion.h3>
             <motion.p
               initial={{ opacity: 0, y: 20 }}

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Product } from "@/types";
+import { Category, Product } from "@/types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -60,7 +60,7 @@ interface ProductEditorProps {
     data: ProductFormValues & { imagesToDelete?: number[] }
   ) => Promise<void>;
   editingProduct?: Product | null;
-  categories: string[];
+  categories: Category[];
   onProductUpdate?: (product: Product) => void;
   isLoading: boolean;
 }
@@ -101,7 +101,7 @@ export const ProductEditor = ({
         price_old: editingProduct.price_old?.toString() || "",
         stock: editingProduct.stock.toString(),
         description: editingProduct.description,
-        category: editingProduct.category,
+        category: editingProduct.category.id.toString(),
         images: [],
       });
     } else {
@@ -278,8 +278,8 @@ export const ProductEditor = ({
                             Выберите категорию
                           </option>
                           {categories.map((category) => (
-                            <option key={category} value={category}>
-                              {category}
+                            <option key={category.id} value={category.id}>
+                              {category.name}
                             </option>
                           ))}
                         </select>

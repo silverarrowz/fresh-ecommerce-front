@@ -38,7 +38,7 @@ const ProductsTable = ({
           <TableRow key={product.id} className="border-0">
             <TableCell className="text-center">{product.id}</TableCell>
             <TableCell>{product.title}</TableCell>
-            <TableCell>{product.category}</TableCell>
+            <TableCell>{product.category.name}</TableCell>
             <TableCell className="text-right">{product.price}</TableCell>
             <TableCell className="text-right">{product.stock}</TableCell>
             <TableCell className="text-center">

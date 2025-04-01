@@ -16,7 +16,7 @@ interface HeaderNavProps {
 
 const HeaderNav = ({ navLinks }: HeaderNavProps) => {
   return (
-    <nav className="hidden lg:flex h-full items-center mx-auto">
+    <nav className="hidden lg:flex h-full min-w-fit items-center">
       {navLinks.map((link) => (
         <div key={link.id} className="h-full flex items-center">
           <Link className="peer h-full flex items-center" to={link.path}>

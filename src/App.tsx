@@ -11,6 +11,8 @@ import NotFound from "./pages/NotFound";
 import Account from "./pages/account/Account";
 import Cart from "./pages/cart/Cart";
 import SuccessPage from "./pages/success/SuccessPage";
+import Search from "./pages/search/Search";
+
 function App() {
   return (
     <Routes>
@@ -18,6 +20,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="products" element={<Products />} />
         <Route path="products/:id" element={<Product />} />
+        <Route path="search" element={<Search />} />
         <Route path="*" element={<NotFound />} />
         <Route element={<ProtectedRoute />}>
           <Route path="account" element={<Account />} />
