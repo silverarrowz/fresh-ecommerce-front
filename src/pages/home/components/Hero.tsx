@@ -84,6 +84,7 @@ export default function Hero() {
                     className="object-cover object-center w-full h-full absolute inset-0"
                     loading="eager"
                     decoding="async"
+                    fetchPriority="high"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
